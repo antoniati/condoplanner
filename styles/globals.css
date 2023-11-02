@@ -25,3 +25,12 @@ p {
 label {
   @apply text-lg font-medium;
 }
+
+select,
+input {
+  @apply 
+    bg-slate-50 p-3 border-2 border-slate-300 rounded 
+    text-dark-blue font-medium tracking-wider text-lg 
+    outline-none focus:border-luminous-blue 
+    hover:tracking-widest transition-all duration-300;
+}
