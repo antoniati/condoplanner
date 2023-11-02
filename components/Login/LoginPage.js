@@ -1,6 +1,7 @@
 import Logo from "@/components/Logo";
 import GoogleButton from "@/components/GoogleButton";
 import LoginForm from "./LoginForm";
+import Link from "next/link";
 
 const LoginPage = () => {
     return (
@@ -22,6 +23,17 @@ const LoginPage = () => {
                         <span></span>
                     </p>
                     <LoginForm />
+                </div>
+
+                {/* Link para página de Cadastro de usuários */}
+                <div className="w-72 sm:w-80 flex flex-col mt-10">
+                    <h2>Não têm uma Conta ?</h2>
+                    <Link
+                        href={"/cadastro"}
+                        className="font-bold tracking-wider underline text-2xl hover:text-luminous-blue"
+                    >
+                        Cadastre-se
+                    </Link>
                 </div>
             </section>
 
