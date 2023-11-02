@@ -1,7 +1,7 @@
-import Logo from "@/components/Logo";
+import LoginPage from "@/components/Login/LoginPage";
 
 export default function Home() {
   return (
-    <Logo />
+    <LoginPage />
   );
 };
