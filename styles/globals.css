@@ -44,3 +44,16 @@ input {
     hover:tracking-widest transition-all 
     duration-300 shadow-md hover:shadow-xl;
 }
+
+/* Texto com linhas */
+.text-whit-lines {
+  @apply w-full text-center relative;
+}
+
+.text-whit-lines :first-child {
+  @apply w-16 sm:w-20 h-0.5 bg-slate-300 absolute top-1/2 right-0;
+}
+
+.text-whit-lines :last-child {
+  @apply w-16 sm:w-20 h-0.5 bg-slate-300 absolute top-1/2 left-0;
+}
