@@ -34,3 +34,13 @@ input {
     outline-none focus:border-luminous-blue 
     hover:tracking-widest transition-all duration-300;
 }
+
+/* Botão padrão personalizado */
+.custom-button {
+  @apply 
+    w-72 sm:w-full h-14 p-4 rounded border-2 
+    flex items-center justify-center gap-2 
+    font-bold text-white tracking-wider 
+    hover:tracking-widest transition-all 
+    duration-300 shadow-md hover:shadow-xl;
+}
