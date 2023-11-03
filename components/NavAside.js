@@ -3,7 +3,6 @@ import Logo from "@/components/Logo";
 import { navItems } from "@/utils/navigationData";
 import { HiOutlineArrowLeftOnRectangle } from "react-icons/hi2";
 import { useRouter } from "next/router";
-import { signOut } from "next-auth/react"
 
 export default function NavAside({ show }) {
     const inactiveLink = 'flex items-center gap-2 p-4 text-white tracking-wider hover:font-bold transition-all duration-300';
@@ -40,7 +39,7 @@ export default function NavAside({ show }) {
                         <button
                             type="button"
                             className={inactiveLink}
-                            onClick={(() => signOut())}
+                            onClick={(() => router.push("/"))}
                         >
                             <HiOutlineArrowLeftOnRectangle size={24} />
                             <span className="text-xl">
