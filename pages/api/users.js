@@ -1,6 +1,6 @@
 import { User } from "@/models/User";
 import connectionWithMongoDB from "@/config/mongoose";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt"
 
 export default async function handle(req, res) {
     const { method } = req;
