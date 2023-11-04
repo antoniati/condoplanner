@@ -21,7 +21,7 @@ const InputForm = ({
                 className={errorMessage && "border-red-500"}
             />
             {errorMessage && (
-                <p className="w-full p-2 flex items-center justify-center font-medium tracking-wider border-2 border-slate-200 text-red-500">
+                <p className="w-full bg-slate-50 rounded p-2 flex items-center justify-center font-medium tracking-wider border-2 border-slate-200 text-red-500">
                     {errorMessage}
                 </p>
             )}
