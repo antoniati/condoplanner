@@ -11,6 +11,7 @@ export const authOptions = {
         })
     ],
     adapter: MongoDBAdapter(clientPromise),
+    secret: process.env.SERVER_KEY_SECRET
 }
 
 export default NextAuth(authOptions)
