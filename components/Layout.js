@@ -1,14 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSession } from 'next-auth/react';
+import { useRouter } from "next/router";
 import Logo from "@/components/Logo";
 import NavAside from "@/components/NavAside";
 import { HiMenu } from "react-icons/hi";
-import HeaderSection from "./HeaderSection";
 
 const Layout = ({ children }) => {
     const [showNav, setShowNav] = useState(false);
-    
+
+    const { data: session } = useSession();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!session) {
+            router.replace("/");
+        }
+    }, [session]);
+
+    if (!session) {
+        return null;
+    }
+
     const handleShowNav = () => {
-        if(showNav === false) {
+        if (showNav === false) {
             setShowNav(true);
         } else {
             setShowNav(false);

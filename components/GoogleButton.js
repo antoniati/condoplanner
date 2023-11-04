@@ -1,10 +1,11 @@
+import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
 
 const GoogleButton = () => {
     return (
         <button
             type="button"
-            onClick={() => {}}
+            onClick={() => signIn("google")}
             className="
             w-72 sm:w-full flex items-center justify-center gap-2 
             bg-slate-50 p-3 border-2 border-slate-300 rounded 
