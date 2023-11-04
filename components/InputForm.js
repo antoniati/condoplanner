@@ -1,19 +1,30 @@
-const InputForm = ({ 
-    inputLabelText, 
-    inputName, 
-    inputType
+const InputForm = ({
+    inputId,
+    inputLabelText,
+    inputName,
+    inputType,
+    inputValue,
+    inputOnChange,
+    errorMessage
 }) => {
     return (
         <div className="flex flex-col gap-1">
-            <label htmlFor="inputField">
+            <label htmlFor={inputId}>
                 {inputLabelText}
             </label>
             <input
-                id="inputField"
+                id={inputId}
                 name={inputName}
                 type={inputType}
-                // autoComplete="off"
+                value={inputValue}
+                onChange={inputOnChange}
+                className={errorMessage && "border-red-500"}
             />
+            {errorMessage && (
+                <p className="w-full p-2 flex items-center justify-center font-medium tracking-wider border-2 border-slate-200 text-red-500">
+                    {errorMessage}
+                </p>
+            )}
         </div>
     );
 };
