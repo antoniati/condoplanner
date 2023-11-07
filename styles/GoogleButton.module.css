@@ -1,0 +1,5 @@
+/* GOOGLE BUTTON */
+/* Estilos padrão do botão de Login do Google  */
+.googleButton {
+    @apply w-72 sm:w-full flex items-center justify-center gap-2 bg-white p-3 border-2 border-slate-300 rounded font-bold text-black tracking-wider text-xl shadow-md hover:shadow-xl hover:border-luminous-blue hover:tracking-widest transition-all duration-300
+  }

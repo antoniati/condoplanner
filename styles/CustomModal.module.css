@@ -1,0 +1,15 @@
+
+.modalWrapper {
+    @apply w-full h-full fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-75 p-5;
+}
+
+.modalContainer {
+    @apply bg-white rounded-lg shadow-lg p-8 flex flex-col items-center gap-2 text-center font-medium;
+}
+.modalContainer p {
+    @apply text-xl;
+}
+
+.modalButton {
+    @apply w-40 mt-5 flex items-center justify-center;
+}

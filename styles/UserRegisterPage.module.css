@@ -1,0 +1,21 @@
+.userRegisterPage {
+    @apply flex flex-col md:flex-row;
+}
+
+.userRegisterPresentation {
+    @apply w-full md:w-auto md:min-h-screen md:p-10 p-5 bg-dark-blue text-white flex flex-col items-start gap-10;
+}
+.userRegisterPresentation p {
+    @apply w-64 hidden md:flex;
+}
+
+.userRegisterFormContainer {
+    @apply flex flex-col md:items-start items-center gap-5 w-full p-10 min-h-screen bg-none lg:bg-[url('/images/bkg-register.png')] bg-no-repeat bg-right-bottom bg-[length:300px_300px] xl:bg-[length:400px_420px] transition-all duration-300;
+}
+.userRegisterFormContainer h1 {
+    @apply w-72 sm:w-80 text-center text-dark-blue;
+}
+
+.userRegisterFormContent {
+    @apply w-72 sm:w-80 flex flex-col items-center gap-5;
+}

@@ -1,0 +1,3 @@
+.residentPage {
+    @apply flex flex-col gap-5 bg-white m-5 rounded-md shadow-md border-2 border-slate-200;
+}

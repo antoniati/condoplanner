@@ -1,0 +1,15 @@
+.logo {
+    @apply flex items-center justify-center gap-5;
+}
+
+.logo img {
+    @apply w-10;
+}
+
+.logo h1 {
+    @apply lowercase;
+}
+
+.logoInCol {
+    @apply flex-row lg:flex-col;
+}

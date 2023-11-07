@@ -1,0 +1,35 @@
+.loginPage {
+    @apply flex;
+}
+
+.loginPageContainer {
+    @apply w-full sm:w-auto min-h-screen p-10 bg-dark-blue text-white flex flex-col items-center gap-10;
+}
+
+.loginPageGoogle {
+    @apply w-80 flex flex-col items-center gap-5;
+}
+
+.loginPageEmail {
+    @apply w-72 sm:w-80 flex flex-col gap-5;
+}
+
+.loginPageSignUp {
+    @apply w-72 sm:w-80 flex flex-col mt-10;
+}
+
+.loginPageSignUp span {
+    @apply font-bold tracking-wider underline text-2xl hover:text-luminous-blue;
+}
+
+.loginPagePresentation {
+    @apply hidden sm:flex flex-col gap-5 w-full p-10 min-h-screen bg-none sm:bg-[url('/images/bkg-login.png')] bg-no-repeat bg-right-bottom bg-[length:470px_450px] xl:bg-[length:530px_500px] transition-all duration-300;
+}
+
+.loginPagePresentation h1 {
+    @apply text-3xl text-dark-blue;
+}
+
+.loginPagePresentation p {
+    @apply text-xl;
+}

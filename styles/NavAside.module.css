@@ -1,0 +1,22 @@
+.navAside {
+    @apply w-0 sm:w-96 p-10 lg:static fixed min-h-screen lg:left-0 top-0 -left-full text-white bg-dark-blue overflow-auto transition-all duration-300 z-10;
+}
+
+.visibleNav {
+    @apply w-full left-0 lg:w-96;
+}
+
+.navContent {
+    @apply flex flex-col gap-2 text-lg tracking-wider mt-10;
+}
+.navContent span {
+    @apply text-xl
+}
+
+.navInactiveLink {
+    @apply flex items-center gap-2 p-4 text-white tracking-wider hover:font-bold transition-all duration-300;
+}
+
+.navActiveLink {
+    @apply flex items-center gap-2 p-4 text-white tracking-wider hover:font-bold transition-all duration-300 bg-light-blue rounded font-bold;
+}

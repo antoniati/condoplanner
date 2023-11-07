@@ -1,0 +1,14 @@
+/* LAYOUT - Estilos padrão do layout das páginas*/
+.layout {
+  @apply flex flex-col justify-start items-start lg:flex-row;
+}
+
+/* menu superior de navegação das páginas */
+.navbar {
+  @apply w-full p-5 bg-dark-blue text-white flex lg:hidden justify-between z-20;
+}
+
+/* conteúdo das páginas */
+.contentPage {
+  @apply w-full h-screen overflow-auto;
+}

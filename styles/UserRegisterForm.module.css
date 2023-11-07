@@ -1,0 +1,7 @@
+.userForm {
+    @apply h-96;
+}
+
+.userFormContent {
+    @apply flex flex-col gap-5  pb-10;
+}

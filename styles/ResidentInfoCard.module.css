@@ -1,0 +1,59 @@
+/* INFO-CARD - Estilos do cartão de informações dos moradores (info-card) */
+.infoCard {
+    @apply bg-white p-5 rounded-md border-2 border-slate-200 shadow-md;
+}
+
+/* título do cartão de informações dos moradores */
+.titleInfoCard {
+    @apply w-full flex sm:flex-row items-center justify-between pb-5 border-b-2 border-b-slate-200;
+}
+
+/* descrição do cartão de informações dos moradores */
+.titleInfoCard p {
+    @apply hidden sm:flex flex-col;
+}
+
+/* wrapper do info card */
+.infoCardWrapper {
+    @apply p-5 flex flex-col gap-5;
+}
+
+/* container do cartão de informações de moradores */
+.infoCardContainer {
+    @apply w-32 h-32 sm:w-40 sm:h-40 object-cover transition-all duration-300;
+}
+
+/* conteúdo do cartão de informações de moradores */
+.infoCardContent {
+    @apply p-5 flex h-full overflow-auto;
+}
+
+/* conteúdo da lista do cartão de informações de moradores */
+.infoCardList {
+    @apply flex items-center gap-2 text-base sm:text-lg transition-all duration-300;
+}
+
+/* containers dos items da lista de informações de moradores */
+.infoCardList section {
+    @apply flex gap-10;
+}
+
+/* imagem de perfil na lista de informações do morador */
+.infoCardList section img {
+    @apply w-32 h-32 sm:w-40 sm:h-40 object-cover transition-all duration-300;
+}
+
+/* containers de informações da lista */
+.infoCardList div {
+    @apply flex flex-col mr-4 sm:mr-8;
+}
+
+/* items da lista de informações dos moradores */
+.infoCardList div li {
+    @apply flex gap-2 items-center border-b-2 border-slate-200 pb-2 whitespace-nowrap;
+}
+
+/* texto informativo do cartão de informações dos moradores */
+.infoCard span {
+    @apply text-xs opacity-100 xl:opacity-0 transition-all duration-300;
+}

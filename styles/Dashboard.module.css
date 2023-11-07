@@ -1,0 +1,9 @@
+/* Estilos do painel de controle */
+.dashboard {
+    @apply p-10;
+}
+
+/*Estilos da lista com os cartões de navegação das páginas */
+.dashboard ul {
+    @apply flex gap-10 justify-center flex-wrap;
+}

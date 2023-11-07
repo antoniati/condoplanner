@@ -1,0 +1,51 @@
+/* TABELA - Estilos padrão das Tabelas */
+.tableWrapper {
+    @apply p-5;
+}
+
+/* container da tabela  */
+.tableContainer {
+    @apply w-full h-96 overflow-auto bg-slate-50 border-2 border-slate-300 rounded-md shadow-sm;
+}
+
+/* conteúdo da tabela */
+.tableContent {
+    @apply w-full;
+}
+
+/* cabeçalho da tabela */
+.tableHeader {
+    @apply bg-slate-200 h-10 static top-0;
+}
+
+.tableHeader th {
+    @apply p-3 border-2 border-slate-300 whitespace-nowrap;
+}
+
+/* conteúdo do ultima célula do cabeçalho tabela */
+.tableHeaderRow th:last-child {
+    @apply w-52;
+}
+
+/* corpo da tabela */
+.tableBody {
+    @apply bg-white;
+}
+
+/* linha com informações do conteúdo da tabela */
+.tableBodyRow td {
+    @apply p-2 text-lg text-center border-2 border-slate-300 whitespace-nowrap;
+}
+
+.tableBodyRow td:first-child {
+    @apply w-16 sm:w-24 whitespace-nowrap;
+}
+
+/* célula da tabela que contém o botão */
+.tableBodyRow td span {
+    @apply flex w-full items-center justify-center;
+}
+
+.tableBodyRow td img {
+    @apply w-16 sm:w-24 h-16 flex object-cover whitespace-nowrap;
+}
