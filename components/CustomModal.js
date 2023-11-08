@@ -1,4 +1,5 @@
 import CustomButton from "@/components/CustomButton";
+import style from "@/styles/CustomModal.module.css";
 
 const CustomModal = ({
     modalIcon,
@@ -7,14 +8,14 @@ const CustomModal = ({
     functionToCloseModal,
 }) => {
     return (
-        <div className={`fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 p-5`} >
-            <section className="bg-white rounded-lg shadow-lg p-8 flex flex-col items-center gap-2 text-center font-medium">
+        <div className={style.modalWrapper} >
+            <section className={style.modalContainer}>
                 {modalIcon}
                 <div>
                     <h1>{modalTitle}</h1>
-                    <p className="text-xl">{modalDescription}</p>
+                    <p>{modalDescription}</p>
                 </div>
-                <div className="w-40 mt-5 flex items-center justify-center">
+                <div className={style.modalButton}>
                     <CustomButton
                         buttonType={"button"}
                         buttonStyle={"black-button"}

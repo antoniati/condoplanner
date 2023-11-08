@@ -1,3 +1,5 @@
+import style from "@/styles/BasicForm.module.css";
+
 const InputForm = ({
     inputId,
     inputLabelText,
@@ -5,10 +7,11 @@ const InputForm = ({
     inputType,
     inputValue,
     inputOnChange,
-    errorMessage
+    inputPlaceholder,
+    errorMessage,
 }) => {
     return (
-        <div className="flex flex-col gap-1">
+        <div className={style.formOption}>
             <label htmlFor={inputId}>
                 {inputLabelText}
             </label>
@@ -16,12 +19,13 @@ const InputForm = ({
                 id={inputId}
                 name={inputName}
                 type={inputType}
-                value={inputValue}
+                value={inputValue || ""}
                 onChange={inputOnChange}
+                placeholder={inputPlaceholder}
                 className={errorMessage && "border-red-500"}
             />
             {errorMessage && (
-                <p className="w-full bg-slate-50 rounded p-2 flex items-center justify-center font-medium tracking-wider border-2 border-slate-200 text-red-500">
+                <p className="error-message">
                     {errorMessage}
                 </p>
             )}

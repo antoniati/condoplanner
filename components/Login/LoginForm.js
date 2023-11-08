@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
+
 import InputForm from "@/components/InputForm";
 import CustomButton from "@/components/CustomButton";
+
+import style from "@/styles/LoginForm.module.css";
 
 const LoginForm = () => {
     const initialLoginFormData = {
@@ -78,7 +81,7 @@ const LoginForm = () => {
 
     return (
         <form onSubmit={handleLoginFormSubmit}>
-            <div className="flex flex-col gap-5">
+            <div className={style.optionsLoginForm}>
                 <InputForm
                     inputLabelText={"E-mail"}
                     inputType={"email"}
@@ -96,7 +99,7 @@ const LoginForm = () => {
                     errorMessage={errorMessages.userPassword}
                 />
             </div>
-            <div className="w-72 sm:w-40 transition-all duration-300 mt-5">
+            <div className={style.buttonLoginForm}>
                 <CustomButton
                     buttonType={"submit"}
                     buttonStyle={"black-button"}

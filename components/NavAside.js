@@ -4,33 +4,31 @@ import { navItems } from "@/utils/navigationData";
 import { HiOutlineArrowLeftOnRectangle } from "react-icons/hi2";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
+import style from '@/styles/NavAside.module.css';
 
 export default function NavAside({ show }) {
-    const inactiveLink = 'flex items-center gap-2 p-4 text-white tracking-wider hover:font-bold transition-all duration-300';
-    const activeLink = inactiveLink + ' bg-light-blue rounded font-bold';
-
     const router = useRouter();
     const { pathname } = router;
 
+    const isPathActive = (navLink) => {
+        return pathname === navLink ? style.navActiveLink : style.navInactiveLink;
+    };
+
     return (
-        <aside className={(show ? "left-0 w-full sm:w-96" : "-left-full") + ' fixed lg:static top-0 -left-full lg:left-0 lg:w-96 min-h-screen p-10 text-white bg-dark-blue overflow-auto h-96 transition-all duration-300'}>
+        <aside className={`${style.navAside} ${show ? style.visibleNav : ""}`}>
             <Link href={navItems[0].navLink}>
-                <Logo flexStyle={"flex-row lg:flex-col"}/>
+                <Logo logoInCol={"col"} />
             </Link>
-            <nav className="flex flex-col gap-2 text-lg tracking-wider mt-10">
+            <nav className={style.navContent}>
                 <ul>
                     {navItems && navItems.map(navItem => (
                         <li key={navItem.navLink}>
                             <Link
                                 href={navItem.navLink}
-                                className={
-                                    pathname === navItem.navLink
-                                    ? activeLink :
-                                    inactiveLink
-                                }
+                                className={`${isPathActive(navItem.navLink)} ${style.navLink}`}
                             >
                                 {navItem.navIcon}
-                                <span className="text-xl">
+                                <span>
                                     {navItem.navText}
                                 </span>
                             </Link>
@@ -39,13 +37,11 @@ export default function NavAside({ show }) {
                     <li>
                         <button
                             type="button"
-                            className={inactiveLink}
-                            onClick={(() => signOut())}
+                            className={`${isPathActive("/logout")} ${style.navLink}`}
+                            onClick={() => signOut()}
                         >
                             <HiOutlineArrowLeftOnRectangle size={24} />
-                            <span className="text-xl">
-                                Sair
-                            </span>
+                            <span> Sair </span>
                         </button>
                     </li>
                 </ul>

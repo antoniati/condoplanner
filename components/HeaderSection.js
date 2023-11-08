@@ -1,19 +1,32 @@
+// Importação do modulo com os estilos do cabeçalho de seção
+import style from "@/styles/HeaderSection.module.css";
+
+/**
+ * Componente de seção de cabeçalho.
+ *
+ * Este componente exibe um cabeçalho com um ícone, um título e conteúdo opcional.
+ *
+ * @param {ReactElement} headerIcon - Ícone do cabeçalho.
+ * @param {string} headerTitle - Título do cabeçalho.
+ * @param {ReactNode} children - Conteúdo opcional a ser exibido à direita do cabeçalho.
+ * @returns {JSX.Element} Componente de seção de cabeçalho.
+ */
 const HeaderSection = ({
     headerIcon,
     headerTitle,
-    children
+    children,
 }) => {
     return (
-        <section className="w-full h-auto gap-4 sm:h-24 p-4 flex justify-center items-center sm:justify-between flex-col sm:flex-row bg-slate-50 border-2 border-slate-300 shadow-sm">
-            <div className="flex flex-col text-center sm:flex-row items-center gap-2 text-2xl font-medium">
-                <span className="text-3xl">
-                    {headerIcon}
-                </span>
+        <div className={style.headerSection}>
+            <div>
+                <i>{headerIcon}</i>
                 <h1> {headerTitle} </h1>
             </div>
-            <div> {children} </div>
-        </section>
+            <span>
+                {children}
+            </span>
+        </div>
     );
-}
+};
 
 export default HeaderSection;

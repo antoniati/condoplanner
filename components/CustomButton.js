@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import styles from "@/styles/CustomButton.module.css";
 
 const CustomButton = ({
     buttonStyle,
@@ -9,12 +10,13 @@ const CustomButton = ({
     buttonText,
 }) => {
 
+    // Classe condicional com base no botãoStyle
     const buttonClasses = classNames(
-        "custom-button",
+        styles.customButton, // classe padrão do botão
         {
-            "border-dark-blue bg-dark-blue hover:border-luminous-blue": buttonStyle === "blue-button",
-            "border-red-500 bg-red-500 hover:bg-red-400": buttonStyle === "red-button",
-            "border-black bg-black hover:border-luminous-blue": buttonStyle === "black-button",
+            [styles.customButtonBlue]: buttonStyle === "blue-button",
+            [styles.customButtonBlack]: buttonStyle === "black-button",
+            [styles.customButtonRed]: buttonStyle === "red-button",
         }
     );
 
@@ -25,10 +27,8 @@ const CustomButton = ({
             href={linkURL}
             onClick={buttonFunction}
         >
-            <span className="text-xl">
+            <span>
                 {buttonIcon}
-            </span>
-            <span className="text-lg font-medium">
                 {buttonText}
             </span>
         </button>

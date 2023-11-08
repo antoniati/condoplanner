@@ -6,6 +6,7 @@ import InputForm from "@/components/InputForm";
 import CustomModal from "@/components/CustomModal";
 import { usersInputFields } from "@/utils/inputFields";
 import { HiCheckBadge } from "react-icons/hi2";
+import style from "@/styles/UserRegisterForm.module.css";
 
 const UserRegisterForm = () => {
     const userRegisterInitialFormData = {
@@ -99,8 +100,8 @@ const UserRegisterForm = () => {
     };
 
     return (
-        <form onSubmit={handleUserRegiterFormSubmit} className="h-96">
-            <div className="flex flex-col gap-5 pb-10">
+        <form onSubmit={handleUserRegiterFormSubmit} className={style.userForm}>
+            <div className={style.userFormContent}>
                 {usersInputFields.map((field, index) => (
                     <InputForm
                         key={index}
@@ -116,7 +117,6 @@ const UserRegisterForm = () => {
                         errorMessage={errorMessages[field.name]}
                     />
                 ))}
-
                 <CustomButton
                     buttonType="submit"
                     buttonStyle="blue-button"
