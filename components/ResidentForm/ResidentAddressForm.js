@@ -24,7 +24,7 @@ const ResidentFormAddress = ({ onSubmit, onBack, prevData }) => {
 
     const [formData, setFormData] = useState({
         ...prevData,
-        initialDataAddressResident,
+        ...initialDataAddressResident,
     });
 
     const [errorMessage, setErrorMessage] = useState("");
@@ -85,13 +85,9 @@ const ResidentFormAddress = ({ onSubmit, onBack, prevData }) => {
                                 inputLabelText={field.label}
                                 inputType={field.type}
                                 inputName={field.name}
-                                inputValue={formData[field.name]}
+                                inputValue={formData[field.name] || ""}
                                 inputPlaceholder={field.placeholder}
-                                inputOnChange={
-                                    field.name === "residentZipCode"
-                                        ? handleCEPBlur
-                                        : handleChangesInputFields
-                                }
+                                inputOnChange={ field.name === "residentZipCode" ? handleCEPBlur : handleChangesInputFields }
                                 errorMessage={errorMessage[field.name]}
                             />
                         ))}

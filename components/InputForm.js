@@ -7,8 +7,10 @@ const InputForm = ({
     inputType,
     inputValue,
     inputOnChange,
+    inputOnBlur,
     inputPlaceholder,
     errorMessage,
+    inputMaxLength,
 }) => {
     return (
         <div className={style.formOption}>
@@ -22,6 +24,8 @@ const InputForm = ({
                 value={inputValue || ""}
                 onChange={inputOnChange}
                 placeholder={inputPlaceholder}
+                maxLength={inputMaxLength}
+                onBlur={inputOnBlur}
                 className={errorMessage && "border-red-500"}
             />
             {errorMessage && (
