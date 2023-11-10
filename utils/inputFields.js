@@ -124,7 +124,7 @@ export const inputsAddressValues = [
 ];
 
 export const filterOptionsResidents = [
-    { label: "Proprietário", value: "proprietário" },
+    { label: "Proprietário", value: "proprietario" },
     { label: "Mensal", value: "mensal" },
     { label: "Temporada", value: "temporada" },
     { label: "Ocupante", value: "ocupante" },

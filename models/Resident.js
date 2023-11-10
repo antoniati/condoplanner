@@ -13,7 +13,7 @@ const ResidentSchema = new Schema(
     residentContactPhone: { type: Number },
     residentOcupation: { type: String },
     kinshipResident: { type: String },
-    typeOfResident: { type: String, required: true },
+    typeOfResident: { type: String, required: true, enum: ["proprietario", "mensal", "temporada", "ocupante"] },
 
     // Endereço
     residentZipCode: { type: Number },
