@@ -1,14 +1,38 @@
+import axios from "axios";
+import { useState } from "react";
+import { useRouter } from "next/router";
+
 import CustomButton from "@/components/CustomButton";
 import Layout from "@/components/Layout";
-import { useRouter } from "next/router";
-import { HiOutlineExclamationTriangle } from "react-icons/hi2";
+import CustomModal from "@/components/CustomModal";
+
+import { HiCheckBadge, HiOutlineExclamationTriangle } from "react-icons/hi2";
+
 import style from "@/styles/ResidentDeletePage.module.css";
 
 const DeleteResidentPage = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const router = useRouter();
+    const { id } = router.query;
+
 
     function handleGoBackPage() {
-        router.push("/moradores/perfil");
+        router.push(`/moradores/perfil/${id}`);
+    }
+
+    async function handleDeleteResident() {
+        try {
+            // Make a DELETE request to your API endpoint
+            const response = await axios.delete(`/api/delete/resident/${id}`);
+
+            if (response.status === 200) {
+                setIsModalOpen(true);
+            } else {
+                console.error('Erro ao deletar o morador:', response.data.error);
+            }
+        } catch (error) {
+            console.error('Erro ao deletar o morador:', error.message);
+        }
     }
 
     return (
@@ -36,6 +60,8 @@ const DeleteResidentPage = () => {
                             buttonType="submit"
                             buttonText={"Sim, Deletar"}
                             buttonStyle="red-button"
+                            buttonFunction={handleDeleteResident}
+
                         />
                         <CustomButton
                             buttonType="button"
@@ -46,6 +72,15 @@ const DeleteResidentPage = () => {
                     </div>
                 </div>
             </section>
+            {/* modal de confirmação de exclusão */}
+            {isModalOpen && (
+                <CustomModal
+                    modalIcon={<HiCheckBadge color="#23C366" size={56} />}
+                    modalTitle="Excluido com Sucesso!"
+                    modalDescription="O Morador foi excluido com sucesso."
+                    functionToCloseModal={() => router.push("/moradores")}
+                />
+            )}
         </Layout>
     );
 };

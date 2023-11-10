@@ -77,6 +77,7 @@ export default async function handle(req, res) {
                 success: true,
                 data: residents,
             });
+            
         } else if (method === "PUT") {
             // Atualiza um Morador existente com base no ID fornecido na URL
             const { id } = req.query;
@@ -136,24 +137,6 @@ export default async function handle(req, res) {
             res.status(200).json({
                 success: true,
                 data: updatedResident,
-            });
-
-            // END-PONT - Para excluir um Morador
-        } else if (method === "DELETE") {
-            // Exclui um Morador com base no ID fornecido na URL
-            const { id } = req.query;
-
-            // Realiza a exclusão no banco de dados
-            await Resident.findByIdAndDelete(id);
-
-            res.status(200).json({
-                success: true,
-                message: "Morador excluído com sucesso.",
-            });
-        } else {
-            res.status(405).json({
-                success: false,
-                error: "Método não permitido.",
             });
         }
     } catch (error) {
