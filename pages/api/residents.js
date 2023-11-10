@@ -42,7 +42,7 @@ export default async function handle(req, res) {
             const sanitizedZipCode = sanitizedAndParInt(residentZipCode);
             const formattedDate = formatDate(dateOfBirthOfResident);
 
-            // Cria um novo residente com os dados da solicitação.
+            // Cria um novo Morador com os dados da solicitação.
             const newResident = await Resident.create({
                 // Dados Pessoais
                 residentFullName,
@@ -64,13 +64,98 @@ export default async function handle(req, res) {
                 residentState,
             });
 
-            // Retorna uma resposta de sucesso com os dados do novo residente.
+            // Retorna uma resposta de sucesso com os dados do novo Morador.
             res.status(201).json({
                 success: true,
                 data: newResident
             });
 
-        } 
+        } else if (method === "GET") {
+            // Operação para buscar todos os moradores
+            const residents = await Resident.find({});
+            res.status(200).json({
+                success: true,
+                data: residents,
+            });
+        } else if (method === "PUT") {
+            // Atualiza um Morador existente com base no ID fornecido na URL
+            const { id } = req.query;
+            const {
+                // Dados Pessoais
+                residentFullName,
+                residentCpfNumber,
+                residentRgNumber,
+                dateOfBirthOfResident,
+                residentEmail,
+                residentContactPhone,
+                residentOcupation,
+                kinshipResident,
+                typeOfResident,
+
+                // Endereço
+                residentZipCode,
+                residentStreet,
+                streetComplement,
+                residentNeighborhood,
+                residentCity,
+                residentState,
+            } = req.body;
+
+            const sanitizedRgNumber = sanitizedAndParInt(residentRgNumber);
+            const sanitizedCpfNumber = sanitizedAndParInt(residentCpfNumber);
+            const sanitizedContactPhone = sanitizedAndParInt(residentContactPhone);
+            const sanitizedZipCode = sanitizedAndParInt(residentZipCode);
+            const formattedDate = formatDate(dateOfBirthOfResident);
+
+            // Realiza a atualização no banco de dados
+            const updatedResident = await Resident.findByIdAndUpdate(
+                id,
+                {
+                    // Dados Pessoais
+                    residentFullName,
+                    residentCpfNumber: sanitizedCpfNumber,
+                    residentRgNumber: sanitizedRgNumber,
+                    dateOfBirthOfResident: formattedDate,
+                    residentEmail,
+                    residentContactPhone: sanitizedContactPhone,
+                    residentOcupation,
+                    kinshipResident,
+                    typeOfResident,
+
+                    // Endereço
+                    residentZipCode: sanitizedZipCode,
+                    residentStreet,
+                    streetComplement,
+                    residentNeighborhood,
+                    residentCity,
+                    residentState,
+                },
+                { new: true }
+            );
+
+            res.status(200).json({
+                success: true,
+                data: updatedResident,
+            });
+
+            // END-PONT - Para excluir um Morador
+        } else if (method === "DELETE") {
+            // Exclui um Morador com base no ID fornecido na URL
+            const { id } = req.query;
+
+            // Realiza a exclusão no banco de dados
+            await Resident.findByIdAndDelete(id);
+
+            res.status(200).json({
+                success: true,
+                message: "Morador excluído com sucesso.",
+            });
+        } else {
+            res.status(405).json({
+                success: false,
+                error: "Método não permitido.",
+            });
+        }
     } catch (error) {
         // Captura e retorna erros inesperados.
         console.error("Erro ao processar a solicitação:", error);
