@@ -56,7 +56,7 @@ const ResidentTable = ({ residentsData, filter }) => {
                         const searchQuery = query.toLowerCase();
                         const fullName = resident.residentFullName.toLowerCase();
                         const rg = resident.residentRgNumber.toString();
-                        const cpf = resident.residentCpfNumber.toString();
+                        const cpf = resident.residentCpfNumber?.toString();
 
                         // Verifica se algum dos campos contém a consulta
                         return (
@@ -115,9 +115,9 @@ const ResidentTable = ({ residentsData, filter }) => {
                                 </td>
                                 <td>{resident.residentFullName}</td>
                                 <td>{resident.typeOfResident}</td>
-                                <td>{resident.residentEmail}</td>
-                                <td>{formatDate(resident.residentContactPhone)}</td>
-                                <td>{resident.residentRgNumber}</td>
+                                <td>111</td>
+                                <td>A</td>
+                                <td>Morando</td>
                                 <td>
                                     {/* Coluna com o botão personalizado para ver o perfil do morador */}
                                     <span>

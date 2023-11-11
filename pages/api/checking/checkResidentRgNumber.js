@@ -22,7 +22,7 @@ export default async function handle(req, res) {
 
             if (existingResidentRgNumber) {
                 // Se existir retornar verdadeiro
-                res.status(200).json({ exists: true });
+                res.status(200).json({ exists: true,  residentId: existingResidentRgNumber._id });
             } else {
                 // Se não existir existir retornar falso
                 res.status(200).json({ exists: false });

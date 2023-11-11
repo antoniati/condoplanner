@@ -18,7 +18,7 @@ export default async function handle(req, res) {
             const existingResident = await Resident.findOne({ residentEmail });
 
             if (existingResident) {
-                res.status(200).json({ exists: true });
+                res.status(200).json({ exists: true, residentId: existingResident._id });
             } else {
                 res.status(200).json({ exists: false });
             }
