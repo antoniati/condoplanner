@@ -10,7 +10,7 @@ const ResidentSchema = new Schema(
     residentRgNumber: { type: Number, required: true },
     dateOfBirthOfResident: { type: String },
     residentEmail: { type: String },
-    residentContactPhone: { type: Number },
+    residentContactPhone: { type: Schema.Types.Mixed },
     residentOcupation: { type: String },
     kinshipResident: { type: String },
     typeOfResident: { type: String, required: true, enum: ["proprietario", "mensal", "temporada", "ocupante"] },
