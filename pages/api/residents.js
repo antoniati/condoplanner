@@ -64,7 +64,7 @@ export default async function handle(req, res) {
                 residentNeighborhood,
                 residentCity,
                 residentState,
-                createdAt: formatDate(currentDate),
+                createdAt: currentDate,
 
             });
 
