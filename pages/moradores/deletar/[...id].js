@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import CustomButton from "@/components/CustomButton";
@@ -15,6 +15,27 @@ const DeleteResidentPage = () => {
     const router = useRouter();
     const { id } = router.query;
 
+    const [residentData, setResidentData] = useState({});
+
+    // Função para buscar os dados do morador
+    const fetchResidentData = async () => {
+        try {
+            const response = await axios.get(`/api/residents/${id}`);
+            if (response.status === 200) {
+                setResidentData(response.data.data);
+            } else {
+                console.error("Erro ao buscar dados do morador");
+            }
+        } catch (error) {
+            new Error("Erro interno do servidor", error);
+        }
+    };
+
+    useEffect(() => {
+        if (id) {
+            fetchResidentData();
+        }
+    }, [id]);
 
     function handleGoBackPage() {
         router.push(`/moradores/perfil/${id}`);
@@ -45,10 +66,10 @@ const DeleteResidentPage = () => {
                     </h1>
                     <h2>
                         Você deseja Deletar o Morador?
-                        <span>
-                            <b>Default Value Of Database &nbsp;-&nbsp;</b>
+                        <span className="text-center flex items-center justify-center sm:justify-start">
+                            <b>{residentData.residentFullName} &nbsp;-&nbsp;</b>
                             <span>
-                                <b>RG:&nbsp;</b>Default Value Of Database
+                                <b>RG:&nbsp;</b>{residentData.residentRgNumber}
                             </span>
                         </span>
                     </h2>
