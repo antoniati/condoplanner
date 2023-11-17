@@ -87,8 +87,9 @@ const ResidentFormAddress = ({ onSubmit, onBack, prevData }) => {
                                 inputName={field.name}
                                 inputValue={formData[field.name] || ""}
                                 inputPlaceholder={field.placeholder}
-                                inputOnChange={ field.name === "residentZipCode" ? handleCEPBlur : handleChangesInputFields }
+                                inputOnChange={handleChangesInputFields}
                                 errorMessage={errorMessage[field.name]}
+                                inputOnBlur={handleCEPBlur}
                             />
                         ))}
                     </section>
