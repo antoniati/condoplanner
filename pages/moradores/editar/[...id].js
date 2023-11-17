@@ -7,7 +7,7 @@ import CustomButton from "@/components/CustomButton";
 import InputForm from "@/components/InputForm";
 import InputImage from "@/components/InputImage";
 
-import { HiUserPlus } from "react-icons/hi2";
+import { HiCheckBadge, HiUserPlus } from "react-icons/hi2";
 
 import { filterOptionsResidents, inputsAddressValues, inputsPersonalDataValues } from "@/utils/inputFields";
 
@@ -15,12 +15,15 @@ import style from "@/styles/BasicForm.module.css";
 import axios from "axios";
 import { applyCPFMask, applyPhoneMask, applyRGMask } from "@/utils/inputFieldsMask";
 import { checkResidentContactPhoneExists, checkResidentCpfNumberExists, checkResidentEmailExists, checkResidentFullNameExists, checkResidentRgNumberExists } from "@/utils/checking/checkResidentData";
+import CustomModal from "@/components/CustomModal";
 
 const ResidentEditPage = () => {
-    const router = useRouter();
-    const { id } = router.query;
     const [formData, setFormData] = useState({});
     const [errorMessage, setErrorMessage] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const router = useRouter();
+    const { id } = router.query;
 
     useEffect(() => {
         // Função assíncrona para buscar dados do morador pelo ID
@@ -33,16 +36,16 @@ const ResidentEditPage = () => {
 
                     // Preencha o formData com os dados do morador
                     setFormData(residentData);
-                } 
-            } catch (error) {                
+                }
+            } catch (error) {
                 console.error('Erro ao buscar dados do morador:', error);
             }
         };
-    
+
         // Chame a função para buscar dados quando o componente montar
         fetchData();
     }, [id]);
-    
+
 
     const handleChangesInputFields = (e) => {
         const { name, value } = e.target;
@@ -115,7 +118,7 @@ const ResidentEditPage = () => {
 
         let isValidSubmit = true;
         const newErrorMessages = {};
-        const residentId = formData._id;  // Obtenha o residentId do formData
+        const residentId = formData._id;
 
         // Verifica se o email já existe
         await checkResidentEmailExists(formData.residentEmail, residentId, (errorMessage) => {
@@ -165,7 +168,8 @@ const ResidentEditPage = () => {
                 const response = await axios.put(`/api/update/resident/${id}`, formData);
 
                 if (response.data.success) {
-                    router.push(`/moradores/perfil/${id}`);
+                    setIsModalOpen(true);
+
                 } else {
                     console.error('Erro ao atualizar morador:', response.data.error);
                 }
@@ -255,6 +259,15 @@ const ResidentEditPage = () => {
                     </section>
                 </form>
             </section>
+            {/* modal de confirmação de edição */}
+            {isModalOpen && (
+                <CustomModal
+                    modalIcon={<HiCheckBadge color="#23C366" size={56} />}
+                    modalTitle="Editado com Sucesso!"
+                    modalDescription="As informações foram editadas com sucesso."
+                    functionToCloseModal={handleGoBackPage}
+                />
+            )}
         </Layout>
     );
 };
