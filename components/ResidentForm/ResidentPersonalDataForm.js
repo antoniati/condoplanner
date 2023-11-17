@@ -108,7 +108,7 @@ const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
         const newErrorMessages = {}; // Objeto para armazenar mensagens de erro
 
         // Verifica se o email já existe
-        await checkResidentEmailExists(formData.residentEmail, (errorMessage) => {
+        await checkResidentEmailExists(formData.residentEmail, null, (errorMessage) => {
             // Se houver erro
             if (errorMessage) {
                 newErrorMessages.residentEmail = errorMessage; // Atribui à mensagem de erro ao objeto de novas mensagens de erros
@@ -117,7 +117,7 @@ const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
         });
 
         // Verifica se o nome completo já existe
-        await checkResidentFullNameExists(formData.residentFullName, (errorMessage) => {
+        await checkResidentFullNameExists(formData.residentFullName, null, (errorMessage) => {
             // Se houver erro
             if (errorMessage) {
                 newErrorMessages.residentFullName = errorMessage; // Atribui à mensagem de erro ao objeto de novas mensagens de erros
@@ -126,7 +126,7 @@ const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
         });
 
         // Verifica se o RG já existe
-        await checkResidentRgNumberExists(formData.residentRgNumber, (errorMessage) => {
+        await checkResidentRgNumberExists(formData.residentRgNumber, null, (errorMessage) => {
             // Se houver erro
             if (errorMessage) {
                 newErrorMessages.residentRgNumber = errorMessage; // Atribui à mensagem de erro ao objeto de novas mensagens de erros
@@ -135,7 +135,7 @@ const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
         });
 
         // Verifica se o CPF já existe
-        await checkResidentCpfNumberExists(formData.residentCpfNumber, (errorMessage) => {
+        await checkResidentCpfNumberExists(formData.residentCpfNumber, null, (errorMessage) => {
             // Se houver erro
             if (errorMessage) {
                 newErrorMessages.residentCpfNumber = errorMessage; // Atribui à mensagem de erro ao objeto de novas mensagens de erros
@@ -144,7 +144,7 @@ const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
         });
 
         // Verifica se o Telefone de Contato já existe
-        await checkResidentContactPhoneExists(formData.residentContactPhone, (errorMessage) => {
+        await checkResidentContactPhoneExists(formData.residentContactPhone, null, (errorMessage) => {
             // Se houver erro
             if (errorMessage) {
                 newErrorMessages.residentContactPhone = errorMessage; // Atribui à mensagem de erro ao objeto de novas mensagens de erros
