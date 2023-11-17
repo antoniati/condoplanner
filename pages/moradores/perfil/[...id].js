@@ -18,14 +18,13 @@ export default function PerfilPage() {
     const fetchResidentData = async () => {
         try {
             const response = await axios.get(`/api/residents/${id}`);
-            console.log(response)
             if (response.status === 200) {
                 setResidentData(response.data.data);
             } else {
                 console.error("Erro ao buscar dados do morador");
             }
         } catch (error) {
-            console.error("Erro ao buscar dados do morador", error);
+            new Error("Erro interno do servidor", error);
         }
     };
 
@@ -60,7 +59,7 @@ export default function PerfilPage() {
                     <div className={style.titleInfoCard}>
                         <h2> Dados Pessoais </h2>
                         <p>
-                            <b>Atualizado em:</b> 
+                            <b>Atualizado em:</b>
                             {formatDate(residentData.updatedAt)}
                         </p>
                     </div>
@@ -123,11 +122,17 @@ export default function PerfilPage() {
                     <h2 className={style.titleInfoCard}>Endereço</h2>
                     <div className={style.infoCardContent}>
                         <ul className={style.infoCardList}>
-                            <li><b>Endereço:</b> {residentData.residentAddress}</li>
-                            <li><b>Cidade:</b> {residentData.residentCity}</li>
-                            <li><b>Estado:</b> {residentData.residentState}</li>
-                            <li><b>CEP:</b> {residentData.residentZipCode}</li>
-                            <li><b>Bairro:</b> {residentData.residentNeighborhood}</li>
+                            <div>
+
+                                <li><b>Endereço:</b> {residentData.residentStreet}</li>
+                                <li><b>Complemento:</b> {residentData.streetComplement}</li>
+                                <li><b>Bairro:</b> {residentData.residentNeighborhood}</li>
+                            </div>
+                            <div>
+                                <li><b>Cidade:</b> {residentData.residentCity}</li>
+                                <li><b>Estado:</b> {residentData.residentState}</li>
+                                <li><b>CEP:</b> {residentData.residentZipCode}</li>
+                            </div>
                         </ul>
                     </div>
                     <span>Arraste para o lado para mais informações</span>
