@@ -48,13 +48,15 @@ export const checkResidentRgNumberExists = async (residentRgNumber, residentId, 
 
 export const checkResidentCpfNumberExists = async (residentCpfNumber, residentId, setErrorMessage) => {
     try {
-        const response = await axios.get(`/api/checking/checkResidentCpfNumber?residentCpfNumber=${residentCpfNumber}`);
+        if (residentCpfNumber !== undefined) {
+            const response = await axios.get(`/api/checking/checkResidentCpfNumber?residentCpfNumber=${residentCpfNumber}`);
 
-        if (response.data.exists && response.data.residentId !== residentId) {
-            setErrorMessage("Este CPF já está cadastrado.");
-        } else {
-            setErrorMessage("");
-        };
+            if (response.data.exists && response.data.residentId !== residentId) {
+                setErrorMessage("Este CPF já está cadastrado.");
+            } else {
+                setErrorMessage("");
+            }
+        }
 
     } catch (error) {
         console.error("Erro ao verificar o cpf:", error);
