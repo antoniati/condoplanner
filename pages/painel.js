@@ -5,7 +5,7 @@ import Dashboard from "@/components/Dashboard"; // Painel de Controle da página
 
 // Importação dos Ícones
 import { HiSquares2X2 } from "react-icons/hi2";
-
+ 
 /**
  * Página de Dashboard (Painel)
  *

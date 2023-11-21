@@ -1,6 +1,5 @@
 import connectionWithMongoDB from "@/config/mongoose";
 import { Resident } from "@/models/Resident";
-import formatDate from "@/utils/formatDate";
 import sanitizedAndParInt from "@/utils/sanitizedAndParInt";
 
 // Rota de Manipulação de Dados dos Moradores
@@ -17,6 +16,7 @@ export default async function handle(req, res) {
             // Atribui os dados da solicitação ao corpo (req.body).
             const {
                 // Dados Pessoais
+                residentImage,
                 residentFullName,
                 residentCpfNumber,
                 residentRgNumber,
@@ -47,6 +47,7 @@ export default async function handle(req, res) {
             // Cria um novo Morador com os dados da solicitação.
             const newResident = await Resident.create({
                 // Dados Pessoais
+                residentImage,
                 residentFullName,
                 residentCpfNumber: sanitizedCpfNumber,
                 residentRgNumber: sanitizedRgNumber,
@@ -81,8 +82,8 @@ export default async function handle(req, res) {
                 success: true,
                 data: residents,
             });
-            
-        } 
+
+        }
     } catch (error) {
         // Captura e retorna erros inesperados.
         console.error("Erro ao processar a solicitação:", error);

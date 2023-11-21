@@ -20,14 +20,19 @@ const NavCard = ({
     cardDesription,
 }) => {
     return (
+        // componente de link Next.js para navegação
         <Link href={navLink} className={style.navCard}>
             <span>
+                {/* título do card */}
                 <h2> {cardTitle} </h2>
+                {/* ícone do card */}
                 <i>{navIcon}</i>
             </span>
+            {/* descrição do card */}
             <p> {cardDesription} </p>
         </Link>
     )
 }
 
+// Exporta o componente
 export default NavCard;

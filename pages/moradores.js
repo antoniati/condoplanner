@@ -17,13 +17,14 @@ import ResidentsTable from "@/components/ResidentsTable"; // Tabela de moradores
 import { filterOptionsResidents } from "@/utils/inputFields";
 
 // Importação de ícones de usuário ("react-icons/hi2")
-import { HiPlusCircle, HiUserGroup } from "react-icons/hi2";
+import { HiOutlineExclamationCircle, HiPlusCircle, HiUserGroup } from "react-icons/hi2";
 
 // Importação do módulo de estilos da página de moradores
 import style from "@/styles/ResidentPage.module.css";
 
 // Importação do pacote "axios" para realizar requisições HTTP.
 import axios from "axios";
+import Spinner from "@/components/Loadings/SpinnerBouceLoader";
 
 /**
  * Página de listagem de moradores.
@@ -34,6 +35,10 @@ import axios from "axios";
 const ResidentsPage = () => {
     // Hook useRouter para fornecer acesso às rotas das páginas.
     const router = useRouter();
+
+    // Estado para armazenar carregamento dos dados
+    const [isLoadingData, setIsLoadingData] = useState(true);
+    const [noResults, setNoResults] = useState(false);
 
     // Estado para armazenar o filtro atual aplicado à tabela de moradores.
     const [filter, setFilter] = useState({ type: "all", query: "" });
@@ -64,13 +69,17 @@ const ResidentsPage = () => {
             } catch (error) {
                 // Exibe um erro no console em caso de falha na requisição.
                 console.error("Erro ao buscar moradores", error);
+            } finally {
+                setIsLoadingData(false)
             }
         };
 
+        
         // Chama a função para buscar os dados dos moradores ao carregar a página.
         fetchResidentsData();
     }, []); // O segundo parâmetro vazio indica que o efeito só deve ser executado uma vez, ao montar o componente.
-
+    
+    
     // Renderiza a estrutura da página.
     return (
         <Layout>
@@ -94,7 +103,7 @@ const ResidentsPage = () => {
             <section className={style.residentPage}>
                 {/* Componente de filtros de pesquisa para moradores */}
                 <SearchFilters
-                    searchTitle={"Morador"}
+                    searchTitle={"Moradores"}
                     placeHolder={"Nome, ou RG, ou CPF do Morador"}
                     selectTextInfo={"Selecione um Tipo de Morador para Listar"}
                     inputTextInfo={"Insira o Nome, RG ou CPF do Morador para Pesquisar"}
@@ -103,7 +112,21 @@ const ResidentsPage = () => {
                     onFilterChange={handleFilterChange}
                 />
                 {/* Tabela de moradores */}
-                <ResidentsTable filter={filter} residentsData={residentsData} />
+                <span className="p-5">
+                    {isLoadingData ? (
+                        <p className="bg-slate-50 flex items-center font-bold p-10 rounded-md gap-2 text-xl tracking-widest text-dark-blue">
+                            <Spinner />
+                            Carregando as informações ...
+                        </p>
+                    ) : noResults ? (
+                        <p className="bg-slate-50 flex p-10 rounded-md gap-2 text-xl tracking-widest text-bg-dark opacity-80">
+                            <HiOutlineExclamationCircle size={30} />
+                            Nenhuma informação foi encontrada   
+                        </p>
+                    ) : (
+                        <ResidentsTable filter={filter} residentsData={residentsData} />
+                    )}
+                </span>
             </section>
         </Layout>
     );

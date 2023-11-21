@@ -13,10 +13,6 @@ import { useRouter } from "next/router";
 // Botão personalizado
 import CustomButton from "@/components/CustomButton";
 
-// Importação da função formatDate do utilitário "formatDate",
-// usada para formatar dados de data.
-import formatDate from "@/utils/formatDate";
-
 // Importação do ícone HiEye do pacote "react-icons/hi2",
 // usado para representar um ícone de olho.
 import { HiEye } from "react-icons/hi2";
@@ -109,8 +105,9 @@ const ResidentTable = ({ residentsData, filter }) => {
                                 <td>
                                     {/* Coluna com a foto de perfil do morador */}
                                     <img
-                                        src={"/images/perfil-img.png"}
+                                        src={resident.residentImage || "/images/perfil-img.png"}
                                         alt="Imagem de Perfil do Morador"
+                                        className="rounded-xl"
                                     />
                                 </td>
                                 <td>{resident.residentFullName}</td>
@@ -143,5 +140,5 @@ const ResidentTable = ({ residentsData, filter }) => {
     );
 };
 
-// Exporta o componente principal da página.
+// Exporta o componente principal da página
 export default ResidentTable;

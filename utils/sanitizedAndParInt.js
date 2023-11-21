@@ -1,8 +1,20 @@
+/**
+ * Remove caracteres não numéricos de uma string.
+ *
+ * @param {string} value - Valor a ser limpo.
+ * @returns {string} - Valor contendo apenas caracteres numéricos.
+ */
 export function removeNonNumericCharacters(value) {
   return value.replace(/\D/g, '');
 }
 
-export default function sanitizedAndParInt(value) {
+/**
+ * Limpa uma string, removendo caracteres não numéricos e tenta converter para um número inteiro.
+ *
+ * @param {string} value - Valor a ser limpo e convertido.
+ * @returns {number|string} - Valor numérico inteiro ou a própria string se a conversão falhar.
+ */
+export default function sanitizedAndParseInt(value) {
   // Se o valor não for uma string, ou for uma string vazia, retorne o próprio valor.
   if (typeof value !== "string" || value.trim() === "") {
     return value;

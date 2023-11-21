@@ -32,7 +32,7 @@ const Dashboard = () => {
                             navIcon={navItem.navIcon}   // Ícone de navegação
                             cardDesription={0}           // Descrição do cartão (neste caso, valor padrão 0)
                         />
-                    </li>
+                    </li> 
                 ))}
             </ul>
         </section>

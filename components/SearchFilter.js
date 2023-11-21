@@ -69,7 +69,7 @@ const SearchFilters = ({
                 <select value={selectedFilter} onChange={handleFilterChange}>
                     {/* Opção padrão para mostrar todos os moradores */}
                     <option value="all">
-                        Todos Moradores
+                        {searchTitle}
                     </option>
                     {/* Mapeamento das opções de filtro para a ordenação */}
                     {filterOptions.map((option) => (
@@ -105,5 +105,5 @@ const SearchFilters = ({
     );
 }
 
-// Exporta o componente principal da página.
+// Exporta o componente principal da página
 export default SearchFilters;

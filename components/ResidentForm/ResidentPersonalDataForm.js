@@ -1,19 +1,45 @@
+// Hooks do React para gerenciamento de estado e efeitos
 import { useEffect, useState } from "react";
 
-import CustomButton from "@/components/CustomButton";
-import HeaderSection from "@/components/HeaderSection";
-import InputForm from "@/components/InputForm";
-import InputImage from "../InputImage";
+// Importa os componentes
+import CustomButton from "@/components/CustomButton"; //  botão personalizado
+import HeaderSection from "@/components/HeaderSection"; //  seção de cabeçalho
+import InputForm from "@/components/InputForm"; //  formulário de entrada de dados
+import InputImage from "@/components/InputImage"; //  Imagem personalizada
 
-import { filterOptionsResidents, inputsPersonalDataValues } from "@/utils/inputFields";
-import { checkResidentContactPhoneExists, checkResidentCpfNumberExists, checkResidentEmailExists, checkResidentFullNameExists, checkResidentRgNumberExists } from "@/utils/checking/checkResidentData";
-import { applyCPFMask, applyPhoneMask, applyRGMask } from "@/utils/inputFieldsMask";
+// Importa os utilitarios
+import {
+    filterOptionsResidents,
+    inputsPersonalDataValues,
+} from "@/utils/inputFields"; // Dados para opções de filtro e valores de entrada
+import {
+    checkResidentContactPhoneExists,
+    checkResidentCpfNumberExists,
+    checkResidentEmailExists,
+    checkResidentFullNameExists,
+    checkResidentRgNumberExists,
+} from "@/utils/checking/checkResidentData"; // Funções de verificação de dados de moradores
+import {
+    applyCPFMask,
+    applyPhoneMask,
+    applyRGMask,
+} from "@/utils/inputFieldsMask"; // Funções para aplicar máscaras em campos específicos
 
-import { HiUserPlus } from "react-icons/hi2";
+import { HiUserPlus } from "react-icons/hi2"; // Ícone de usuário para o cabeçalho
 
-import style from "@/styles/BasicForm.module.css"
+import style from "@/styles/BasicForm.module.css"; // Estilos do formulário
 
+/**
+ * Componente funcional para o formulário de dados pessoais do morador.
+ * Permite o preenchimento de dados pessoais e avança para a próxima etapa.
+ *
+ * @param {Object} props - Propriedades do componente.
+ * @param {Function} props.onSubmit - Função para lidar com o envio do formulário.
+ * @param {Object} props.prevData - Dados previamente preenchidos.
+ * @returns {JSX.Element} Componente do formulário de dados pessoais do morador.
+ */
 const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
+    // Estado para armazenar os dados do formulário
     const initialDataResidentForm = {
         residentFullName: "",
         residentCpfNumber: "",
@@ -24,20 +50,27 @@ const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
         residentOcupation: "",
         kinshipResident: "",
         typeOfResident: "",
-    }
+    };
 
+    // Estados para armazenar dados do formulário e mensagens de erro
     const [formData, setFormData] = useState({
         ...prevData,
-        ...initialDataResidentForm
+        ...initialDataResidentForm,
+        residentImage: null,
     });
-
     const [errorMessages, setErrorMessages] = useState({});
 
+    // Efeito para atualizar dados previamente preenchidos
     useEffect(() => {
         prevData && setFormData(prevData);
     }, [prevData]);
 
-
+    /**
+     * Função para lidar com as mudanças nos campos de entrada.
+     * Aplica máscaras específicas e atualiza o estado dos dados do formulário.
+     *
+     * @param {Event} e - Objeto de evento.
+     */
     const handleChangesInputFields = (e) => {
         const { name, value } = e.target;
         let maskedValue = value;
@@ -51,11 +84,16 @@ const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
             maskedValue = applyPhoneMask(value);
         }
 
+        // Atualizar estado dos dados do formulário e limpar mensagens de erro
         setFormData({ ...formData, [name]: maskedValue });
-
         cleanErrorMessage(name);
-    }
+    };
 
+    /**
+     * Função para limpar mensagens de erro de um campo específico.
+     *
+     * @param {string} fieldName - Nome do campo.
+     */
     const cleanErrorMessage = (fieldName) => {
         setErrorMessages((prevErrors) => ({
             ...prevErrors,
@@ -63,116 +101,137 @@ const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
         }));
     };
 
-    // Função para válidar se os campos de entrada obrigatórios estão vazios.
-    const validateRiqueredFields = () => {
-        // Defini os campos de entrada que são obrigatórios
+    /**
+     * Função para validar campos de entrada obrigatórios.
+     *
+     * @returns {boolean} - Indica se todos os campos obrigatórios foram preenchidos.
+     */
+    const validateRequiredFields = () => {
+        // Definir campos de entrada obrigatórios
         const requiredFields = [
-            'residentFullName',
-            'residentRgNumber',
-            'typeOfResident'
+            "residentFullName",
+            "residentRgNumber",
+            "typeOfResident",
         ];
 
-        // Inicia o valor dos campos de entrada como válido (verdadeiro)
+        // Iniciar como válido
         let isValidField = true;
 
-        // Estrutura lógica para verificar os campos vazios
+        // Verificar campos obrigatórios vazios
         for (const field of requiredFields) {
-            // Se os campos de entrada estiverem vazios
             if (!formData[field]) {
-                // Atribui o erro ao objeto de mensagens de erro,
-                // repassando as mensagens de erro anteriores caso existam
                 setErrorMessages((prevErrors) => ({
                     ...prevErrors,
                     [field]: `Este campo é obrigatório.`,
                 }));
-                // Define o valor dos campos de entrada como inválido (falso)
                 isValidField = false;
             }
         }
 
-        // Retornar o valor dos campos de entrada caso sejam válidos (verdadeiro)
         return isValidField;
     };
 
-    // Função para lidar com o envio dos dados do formuláiro
+    /**
+     * Função para lidar com o envio do formulário.
+     *
+     * @param {Event} e - Objeto de evento.
+     */
     const handleFormSubmit = async (e) => {
-        // Previne o comportamento padrão de envio de fomulários
         e.preventDefault();
 
-        // Validação dos campos de entradas obrigatórios
-        if (!validateRiqueredFields()) {
+        // Validar campos obrigatórios
+        if (!validateRequiredFields()) {
             return;
         }
 
-        let isValidSubmit = true; // Inicia o envio do formulário como válido (verdadeiro)
-        const newErrorMessages = {}; // Objeto para armazenar mensagens de erro
+        let isValidSubmit = true; // Iniciar como válido
+        const newErrorMessages = {}; // Objeto para armazenar novas mensagens de erro
 
-        // Verifica se o email já existe
-        await checkResidentEmailExists(formData.residentEmail, null, (errorMessage) => {
-            // Se houver erro
-            if (errorMessage) {
-                newErrorMessages.residentEmail = errorMessage; // Atribui à mensagem de erro ao objeto de novas mensagens de erros
-                isValidSubmit = false; // Define o envio do formulário como inválido (falso)
+        // Verificar se o email já existe
+        await checkResidentEmailExists(
+            formData.residentEmail,
+            null,
+            (errorMessage) => {
+                if (errorMessage) {
+                    newErrorMessages.residentEmail = errorMessage;
+                    isValidSubmit = false;
+                }
             }
-        });
+        );
 
-        // Verifica se o nome completo já existe
-        await checkResidentFullNameExists(formData.residentFullName, null, (errorMessage) => {
-            // Se houver erro
-            if (errorMessage) {
-                newErrorMessages.residentFullName = errorMessage; // Atribui à mensagem de erro ao objeto de novas mensagens de erros
-                isValidSubmit = false; isValidSubmit = false; // Define o envio do formulário como inválido (falso)
+        // Verificar se o nome completo já existe
+        await checkResidentFullNameExists(
+            formData.residentFullName,
+            null,
+            (errorMessage) => {
+                if (errorMessage) {
+                    newErrorMessages.residentFullName = errorMessage;
+                    isValidSubmit = false;
+                }
             }
-        });
+        );
 
-        // Verifica se o RG já existe
-        await checkResidentRgNumberExists(formData.residentRgNumber, null, (errorMessage) => {
-            // Se houver erro
-            if (errorMessage) {
-                newErrorMessages.residentRgNumber = errorMessage; // Atribui à mensagem de erro ao objeto de novas mensagens de erros
-                isValidSubmit = false; isValidSubmit = false; // Define o envio do formulário como inválido (falso)
+        // Verificar se o RG já existe
+        await checkResidentRgNumberExists(
+            formData.residentRgNumber,
+            null,
+            (errorMessage) => {
+                if (errorMessage) {
+                    newErrorMessages.residentRgNumber = errorMessage;
+                    isValidSubmit = false;
+                }
             }
-        });
+        );
 
-        // Verifica se o CPF já existe
-        await checkResidentCpfNumberExists(formData.residentCpfNumber, null, (errorMessage) => {
-            // Se houver erro
-            if (errorMessage) {
-                newErrorMessages.residentCpfNumber = errorMessage; // Atribui à mensagem de erro ao objeto de novas mensagens de erros
-                isValidSubmit = false; isValidSubmit = false; // Define o envio do formulário como inválido (falso)
+        // Verificar se o CPF já existe
+        await checkResidentCpfNumberExists(
+            formData.residentCpfNumber,
+            null,
+            (errorMessage) => {
+                if (errorMessage) {
+                    newErrorMessages.residentCpfNumber = errorMessage;
+                    isValidSubmit = false;
+                }
             }
-        });
+        );
 
-        // Verifica se o Telefone de Contato já existe
-        await checkResidentContactPhoneExists(formData.residentContactPhone, null, (errorMessage) => {
-            // Se houver erro
-            if (errorMessage) {
-                newErrorMessages.residentContactPhone = errorMessage; // Atribui à mensagem de erro ao objeto de novas mensagens de erros
-                isValidSubmit = false; isValidSubmit = false; // Define o envio do formulário como inválido (falso)
+        // Verificar se o Telefone de Contato já existe
+        await checkResidentContactPhoneExists(
+            formData.residentContactPhone,
+            null,
+            (errorMessage) => {
+                if (errorMessage) {
+                    newErrorMessages.residentContactPhone = errorMessage;
+                    isValidSubmit = false;
+                }
             }
-        });
+        );
 
-        // Atualiza o estado das mensagens de erro com as novas mensagens de erro se houver
+        // Atualizar estado das mensagens de erro com novas mensagens, se houver
         setErrorMessages(newErrorMessages);
 
+        // Se o envio for válido, limpar mensagens de erro e enviar formulário
         if (isValidSubmit) {
-            // Se o envio for válido (verdadeiro), significa que todas as verificações passaram
-            setErrorMessages({}); // Limpa todas as mensagens de erro
-            onSubmit(formData); // Envia o formulário
+            setErrorMessages({});
+            onSubmit(formData);
         }
     };
 
+    // Renderização do componente
     return (
         <>
+            {/* Seção de cabeçalho */}
             <HeaderSection
                 headerIcon={<HiUserPlus size={36} />}
                 headerTitle={"Formulário de Cadastro de Morador"}
             >
                 <p>
-                    Preencha os campos do formulário abaixo com os
-                    Dados Pessoais do Morador para Cadastra-los
+                    Preencha os campos do formulário abaixo com os Dados Pessoais
+                    do Morador para Cadastrá-los.
                 </p>
             </HeaderSection>
+
+            {/* Seção do formulário */}
             <section className={style.formContainer}>
                 <form
                     className={style.formContent}
@@ -181,7 +240,15 @@ const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
                     <h2 className={style.titleForm}>
                         Dados Pessoais do Morador
                     </h2>
-                    <InputImage />
+
+                    {/* Componente de entrada de imagem */}
+                    <InputImage
+                        onImageSelect={(image) =>
+                            setFormData({ ...formData, residentImage: image })
+                        }
+                    />
+
+                    {/* Seção de campos de entrada */}
                     <section className={style.formSection}>
                         {inputsPersonalDataValues.map((field, index) => (
                             <InputForm
@@ -199,14 +266,14 @@ const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
 
                         {/* Seletor do Tipo de Morador */}
                         <div className={style.formOption}>
-                            <label> Tipo </label>
+                            <label>Tipo</label>
                             <select
                                 name="typeOfResident"
                                 value={formData.typeOfResident}
                                 onChange={handleChangesInputFields}
                                 className={errorMessages && "error-input" || ""}
                             >
-                                <option value=""> Selecione um Tipo </option>
+                                <option value="">Selecione um Tipo</option>
                                 {filterOptionsResidents.map((option) => (
                                     <option
                                         key={option.value}
@@ -216,17 +283,18 @@ const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
                                     </option>
                                 ))}
                             </select>
-                            {errorMessages.typeOfResident &&
+                            {errorMessages.typeOfResident && (
                                 <p className="error-message">
                                     {errorMessages.typeOfResident}
                                 </p>
-                            }
-
+                            )}
                         </div>
                     </section>
+
+                    {/* Botão para próxima etapa */}
                     <div className={style.buttonsForm}>
                         <CustomButton
-                            type={"Próxima Etapa submit"}
+                            type={"submit"}
                             buttonStyle={"black-button"}
                             buttonText={"Próxima Etapa"}
                         />
@@ -237,4 +305,5 @@ const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
     );
 };
 
+// Exporta o componente
 export default ResidentPersonalDataForm;

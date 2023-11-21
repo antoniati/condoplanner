@@ -1,5 +1,9 @@
 import { HiBuildingOffice2, HiClipboardDocumentList, HiSquares2X2, HiUserGroup } from "react-icons/hi2";
 
+/**
+ * Array contendo itens de navegação para serem exibidos;
+ * Cada item possui um link, um ícone e um texto associado.
+ */
 export const navItems = [
     {
         navLink: "/painel",

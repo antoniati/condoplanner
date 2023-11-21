@@ -1,40 +1,56 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+// Importação de bibliotecas externas
+import { useEffect, useState } from "react"; // Hooks do React para efeitos colaterais e gerenciamento de estado
+import { useRouter } from "next/router"; // Hook do Next.js para obtenção do objeto de roteamento
+import axios from "axios"; // Biblioteca para fazer requisições HTTP
 
-import Layout from "@/components/Layout";
-import HeaderSection from "@/components/HeaderSection";
-import CustomButton from "@/components/CustomButton";
-import InputForm from "@/components/InputForm";
-import InputImage from "@/components/InputImage";
+// Importação de componentes personalizados
+import Layout from "@/components/Layout"; // Layout principal da aplicação
+import HeaderSection from "@/components/HeaderSection"; // Componente de cabeçalho personalizado
+import CustomButton from "@/components/CustomButton"; // Botão personalizado
+import InputForm from "@/components/InputForm"; // Componente de entrada de formulário
+import InputImage from "@/components/InputImage"; // Componente de entrada de imagem
+import CustomModal from "@/components/CustomModal"; // Modal personalizado
 
+// Importação de ícones da biblioteca "react-icons/hi2"
 import { HiCheckBadge, HiUserPlus } from "react-icons/hi2";
 
-import { filterOptionsResidents, inputsAddressValues, inputsPersonalDataValues } from "@/utils/inputFields";
+// Importação de utilitários
+import { applyCPFMask, applyPhoneMask, applyRGMask } from "@/utils/inputFieldsMask"; // Funções para aplicar máscaras em campos de entrada
+import {
+    checkResidentContactPhoneExists,
+    checkResidentCpfNumberExists,
+    checkResidentEmailExists,
+    checkResidentFullNameExists,
+    checkResidentRgNumberExists
+} from "@/utils/checking/checkResidentData"; // Funções para verificar a existência de dados do morador
 
+// Importação de estilos
 import style from "@/styles/BasicForm.module.css";
-import axios from "axios";
-import { applyCPFMask, applyPhoneMask, applyRGMask } from "@/utils/inputFieldsMask";
-import { checkResidentContactPhoneExists, checkResidentCpfNumberExists, checkResidentEmailExists, checkResidentFullNameExists, checkResidentRgNumberExists } from "@/utils/checking/checkResidentData";
-import CustomModal from "@/components/CustomModal";
 
+/**
+ * Página de edição de morador.
+ *
+ * @returns {JSX.Element} Componente da página de edição de morador.
+ */
 const ResidentEditPage = () => {
-    const [formData, setFormData] = useState({});
-    const [errorMessage, setErrorMessage] = useState({});
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [formData, setFormData] = useState({}); // Estado para armazenar os dados do morador
+    const [errorMessage, setErrorMessage] = useState({}); // Estado para armazenar mensagens de erro
+    const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a abertura do modal
 
-    const router = useRouter();
-    const { id } = router.query;
+    const router = useRouter(); // Objeto de roteamento do Next.js
+    const { id } = router.query; // Obtém o parâmetro de rota "id"
 
+    // Efeito colateral para buscar dados do morador quando o "id" muda
     useEffect(() => {
         // Função assíncrona para buscar dados do morador pelo ID
         const fetchData = async () => {
             try {
                 // Verifica se id é definido antes de fazer a requisição
                 if (id) {
-                    const response = await axios.get(`/api/residents/${id}`);
+                    const response = await axios.get(`/api/residentPerfil/${id}`);
                     const residentData = response.data.data;
 
-                    // Preencha o formData com os dados do morador
+                    // Preenche o formData com os dados do morador
                     setFormData(residentData);
                 }
             } catch (error) {
@@ -42,16 +58,16 @@ const ResidentEditPage = () => {
             }
         };
 
-        // Chame a função para buscar dados quando o componente montar
+        // Chama a função para buscar dados quando o componente monta
         fetchData();
     }, [id]);
 
-
+    // Função para lidar com mudanças nos campos de entrada
     const handleChangesInputFields = (e) => {
         const { name, value } = e.target;
         let maskedValue = value;
 
-        // Aplicar máscara dependendo do campo
+        // Aplica máscara dependendo do campo
         if (name === "residentCpfNumber") {
             maskedValue = applyCPFMask(value);
         } else if (name === "residentRgNumber") {
@@ -65,9 +81,9 @@ const ResidentEditPage = () => {
         cleanErrorMessage(name);
     }
 
-    // Função para válidar se os campos de entrada obrigatórios estão vazios.
-    const validateRiqueredFields = () => {
-        // Defini os campos de entrada que são obrigatórios
+    // Função para validar se os campos de entrada obrigatórios estão vazios
+    const validateRequiredFields = () => {
+        // Define os campos de entrada que são obrigatórios
         const requiredFields = [
             'residentFullName',
             'residentRgNumber',
@@ -92,11 +108,11 @@ const ResidentEditPage = () => {
             }
         }
 
-        // Retornar o valor dos campos de entrada caso sejam válidos (verdadeiro)
+        // Retorna o valor dos campos de entrada caso sejam válidos (verdadeiro)
         return isValidField;
     };
 
-
+    // Função para limpar mensagens de erro
     const cleanErrorMessage = (fieldName) => {
         setErrorMessage((prevErrors) => ({
             ...prevErrors,
@@ -104,15 +120,17 @@ const ResidentEditPage = () => {
         }));
     };
 
-    function handleGoBackPage() {
+    // Função para navegar de volta à página de perfil do morador
+    const handleGoBackPage = () => {
         router.push(`/moradores/perfil/${id}`);
     }
 
+    // Função para lidar com a atualização do morador
     const handleUpdateResident = async (e) => {
         e.preventDefault();
 
         // Validação dos campos de entradas obrigatórios
-        if (!validateRiqueredFields()) {
+        if (!validateRequiredFields()) {
             return;
         }
 
@@ -187,7 +205,7 @@ const ResidentEditPage = () => {
             >
                 <p>
                     Preencha os campos do formulário abaixo para
-                    Editar as Informações do Morador.
+                    editar as informações do morador.
                 </p>
             </HeaderSection>
             <section className={style.formContainer}>
@@ -259,7 +277,7 @@ const ResidentEditPage = () => {
                     </section>
                 </form>
             </section>
-            {/* modal de confirmação de edição */}
+            {/* Modal de confirmação de edição */}
             {isModalOpen && (
                 <CustomModal
                     modalIcon={<HiCheckBadge color="#23C366" size={56} />}

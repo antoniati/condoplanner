@@ -48,10 +48,10 @@ const Layout = ({ children }) => {
                     <HiMenu size={36} />
                 </button>
             </header>
-            
+
             {/* Navegação lateral com base no estado "showNav" */}
             <NavAside show={showNav} />
-            
+
             {/* Renderiza o conteúdo da página passado como "children" */}
             <section className={`${showNav ? "mt-20 lg:mt-0" : ""} ${style.contentPage}`}>
                 {children}

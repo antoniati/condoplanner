@@ -5,6 +5,7 @@ import { Schema, model, models } from "mongoose";
 const ResidentSchema = new Schema(
     {
     // Dados Pessoais
+    residentImage: {type: String},
     residentFullName: { type: String, required: true },
     residentCpfNumber: { type: Number },
     residentRgNumber: { type: Number, required: true },
@@ -24,7 +25,7 @@ const ResidentSchema = new Schema(
     residentState: { type: String },
 
     // ID de relacionamento com o banco de dados das unidades do condomínio
-    CondoUnit: { type: Schema.Types.ObjectId, ref: "CondoUnit" },
+    condoUnits: [{ type: Schema.Types.ObjectId, ref: "CondoUnit" }],
 }, {
     timestamps: true, // Adiciona campos de data de criação e modificação automaticamente
 });

@@ -6,7 +6,7 @@
 
 // Importa a biblioteca Mongoose para facilitar a interação com o MongoDB.
 import mongoose from "mongoose";
-
+ 
 /*
     Esta função gerencia a conexão com o banco de dados MongoDB.
     Se uma conexão já existe (estado 1), a função retorna a promessa da conexão existente.

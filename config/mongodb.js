@@ -4,7 +4,7 @@
 */ 
 
 // Importa o módulo MongoClient da biblioteca "mongodb".
-import { MongoClient } from "mongodb"
+import { MongoClient } from "mongodb" 
 
 // Verifica se a variável de ambiente "MONGODB_URI" está definida.
 if (!process.env.MONGODB_URI) {
