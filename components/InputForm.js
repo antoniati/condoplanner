@@ -1,5 +1,5 @@
 // Importação dos módulos de estilos do componente.
-import style from "@/styles/BasicForm.module.css";
+import styleForm from "@/styles/BasicForm.module.css";
 
 /**
  * Componente funcional para um campo de entrada em um formulário.
@@ -30,34 +30,34 @@ const InputForm = ({
     errorMessage,
     inputMaxLength,
     inputKeyDown,
+    children
 }) => {
     // Renderização do componente
     return (
-        <div className={style.formOption}>
+        <div className={styleForm.formOption}>
             {/* Rótulo do campo de entrada */}
             <label htmlFor={inputId}>
                 {inputLabelText}
             </label>
             {/* Campo de entrada */}
-            <input
-                id={inputId}
-                name={inputName}
-                type={inputType}
-                value={inputValue || ""}
-                onChange={inputOnChange}
-                placeholder={inputPlaceholder}
-                maxLength={inputMaxLength}
-                onBlur={inputOnBlur}
-                // Adiciona classe de erro se houver uma mensagem de erro
-                className={errorMessage && "border-red-500"}
-                onKeyDown={inputKeyDown}
-            />
+            <div>
+                <input
+                    id={inputId}
+                    name={inputName}
+                    type={inputType}
+                    value={inputValue || ""}
+                    onChange={inputOnChange}
+                    placeholder={inputPlaceholder}
+                    maxLength={inputMaxLength}
+                    onBlur={inputOnBlur}
+                    // Adiciona classe de erro se houver uma mensagem de erro
+                    className={errorMessage && "border-red-500"}
+                    onKeyDown={inputKeyDown}
+                />
+                <span> {children} </span>
+            </div>
             {/* Exibição da mensagem de erro */}
-            {errorMessage && (
-                <p className="error-message">
-                    {errorMessage}
-                </p>
-            )}
+            {errorMessage && <p> {errorMessage} </p>}
         </div>
     );
 };

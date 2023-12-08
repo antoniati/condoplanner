@@ -1,17 +1,17 @@
 /* HEADER SECTION */
 /* Estilos do container do cabeçalho das sessões */
 .headerSection {
-    @apply w-full p-8 flex flex-wrap items-center justify-between bg-slate-200 border-b-2 border-b-slate-300 shadow-sm;
+    @apply w-full p-8 flex flex-wrap items-center sm:justify-between justify-center bg-gray-light border-b-2 border-b-slate-300 shadow-sm;
 }
 
 /* Estilos do container do conteúdo à esquerda do cabeçalho das sessões */
 .headerSection div {
-    @apply w-full sm:w-auto flex flex-col sm:flex-row text-center gap-1 sm:gap-5 items-center justify-center pb-2 sm:p-0;
+    @apply w-full sm:w-auto flex flex-col sm:flex-row gap-1 sm:gap-5 items-center justify-center pb-2 sm:p-0;
 }
 
 /* Estilos do container do conteúdo à direita do cabeçalho das sessões */
 .headerSection span {
-    @apply w-full sm:w-auto flex items-center justify-center lg:justify-end;
+    @apply w-72 sm:w-auto flex  flex-col sm:flex-row items-center justify-center lg:justify-end gap-5 sm:mt-0 mt-5 transition-all duration-300;
 }
 
 /* Estilos da descrição do cabeçalho das sessões */

@@ -1,65 +1,43 @@
-// Importação de bibliotecas externas
-import axios from "axios"; // Biblioteca para fazer requisições HTTP
-import { useEffect, useState } from "react"; // Hooks do React para efeitos colaterais e gerenciamento de estado
-import { useRouter } from "next/router"; // Hook do Next.js para obtenção do objeto de roteamento
-
-// Importação de componentes personalizados
-import CustomButton from "@/components/CustomButton"; // Botão personalizado
-import Layout from "@/components/Layout"; // Layout principal da aplicação
-import CustomModal from "@/components/CustomModal"; // Modal personalizado
-
-// Importação de ícones da biblioteca "react-icons/hi"
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { HiCheckBadge, HiOutlineExclamationTriangle } from "react-icons/hi2";
 
-// Importação do módulo de estilos da página
+import CustomButton from "@/components/CustomButton";
+import Layout from "@/components/Layout";
+import CustomModal from "@/components/CustomModal";
+
+import { fetchResidentDataById } from "@/utils/fetchData/fetchResidentById";
+
 import style from "@/styles/ResidentDeletePage.module.css";
 
-/**
- * Página de exclusão de morador.
- *
- * @returns {JSX.Element} Componente da página de exclusão de morador.
- */
-const DeleteResidentPage = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a abertura do modal
-    const router = useRouter(); // Objeto de roteamento do Next.js
-    const { id } = router.query; // Obtém o parâmetro de rota "id"
+export default function DeleteResidentPage() {
+    const [residentData, setResidentData] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const [residentData, setResidentData] = useState({}); // Estado para armazenar dados do morador
+    const router = useRouter();
+    const { id } = router.query;
 
-    // Função para buscar os dados do morador
-    const fetchResidentData = async () => {
-        try {
-            const response = await axios.get(`/api/residentPerfil/${id}`);
-            if (response.status === 200) {
-                setResidentData(response.data.data);
-            } else {
-                console.error("Erro ao buscar dados do morador");
-            }
-        } catch (error) {
-            console.error("Erro interno do servidor", error);
-        }
-    };
-
-    // Efeito colateral para buscar dados do morador quando o "id" muda
     useEffect(() => {
+        const handleFetchResidentData = async () => {
+            const residentData = await fetchResidentDataById(id);
+            setResidentData(residentData);
+        };
+
         if (id) {
-            fetchResidentData();
+            handleFetchResidentData();
         }
     }, [id]);
 
-    // Função para navegar de volta à página de perfil do morador
-    function handleGoBackPage() {
-        router.push(`/moradores/perfil/${id}`);
-    }
+    const handleGoBackPage = () => router.push(`/moradores/perfil/${id}`);
 
-    // Função para lidar com a exclusão do morador
     async function handleDeleteResident() {
         try {
-            // Faz uma requisição DELETE para o endpoint da API
-            const response = await axios.delete(`/api/delete/resident/${id}`);
+
+            const response = await axios.delete(`/api/delete/deleteResident/${id}`);
 
             if (response.status === 200) {
-                setIsModalOpen(true); // Abre o modal de confirmação
+                setIsModalOpen(true);
             } else {
                 console.error('Erro ao deletar o morador:', response.data.error);
             }
@@ -78,7 +56,7 @@ const DeleteResidentPage = () => {
                     </h1>
                     <h2>
                         Você deseja Deletar o Morador?
-                        <span className="text-center flex items-center justify-center sm:justify-start">
+                        <span>
                             <b>{residentData.residentFullName} &nbsp;-&nbsp;</b>
                             <span>
                                 <b>RG:&nbsp;</b>{residentData.residentRgNumber}
@@ -104,17 +82,15 @@ const DeleteResidentPage = () => {
                     </div>
                 </div>
             </section>
-            {/* Modal de confirmação de exclusão */}
+
             {isModalOpen && (
                 <CustomModal
                     modalIcon={<HiCheckBadge color="#23C366" size={56} />}
                     modalTitle="Excluído com Sucesso!"
                     modalDescription="O Morador foi excluído com sucesso."
-                    functionToCloseModal={() => router.push("/unidades")}
+                    functionToCloseModal={() => router.push("/moradores")}
                 />
             )}
         </Layout>
     );
 };
-
-export default DeleteResidentPage;

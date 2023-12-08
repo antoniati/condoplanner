@@ -1,6 +1,6 @@
 /* NAV CARD - Estilo do cartão de navegação com informações das páginas (nav-card) */
 .navCard {
-    @apply sm:w-80 w-72 p-4 flex flex-col gap-6 bg-slate-200 rounded-md hover:bg-light-blue text-black hover:text-white shadow-sm hover:shadow-xl border-2 border-slate-300 hover:border-light-blue transition-all duration-300;
+    @apply sm:w-80 w-72 p-4 flex flex-col gap-6 bg-gray-light rounded-md hover:bg-light-blue text-black hover:text-white shadow-sm hover:shadow-xl border-2 border-slate-300 hover:border-light-blue transition-all duration-300;
 }
 
 /* container do conteúdo do cartão de navegação das páginas*/

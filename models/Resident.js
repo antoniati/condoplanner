@@ -1,35 +1,26 @@
-// Importa as classes do Mongoose para definir modelos MongoDB
-import { Schema, model, models } from "mongoose";
+    import { Schema, model, models } from "mongoose";
 
-// Definição do modelo do Resident no MongoDB
-const ResidentSchema = new Schema(
-    {
-    // Dados Pessoais
-    residentImage: {type: String},
-    residentFullName: { type: String, required: true },
-    residentCpfNumber: { type: Number },
-    residentRgNumber: { type: Number, required: true },
-    dateOfBirthOfResident: { type: String },
-    residentEmail: { type: String },
-    residentContactPhone: { type: Schema.Types.Mixed },
-    residentOcupation: { type: String },
-    kinshipResident: { type: String },
-    typeOfResident: { type: String, required: true, enum: ["proprietario", "mensal", "temporada", "ocupante"] },
+    const ResidentSchema = new Schema(
+        {
+            residentImage: { type: String },
+            residentFullName: { type: String, required: true },
+            residentRgNumber: { type: String, required: true },
+            residentCpfNumber: { type: String },
+            dateOfBirthOfResident: { type: String },
+            residentEmail: { type: String },
+            residentContactPhone: { type: String },
+            residentOcupation: { type: String },
+            kinshipResident: { type: String },
+            typeOfResident: { type: String, required: true, enum: ["proprietario", "mensal", "temporada", "ocupante"] },
+            residentZipCode: { type: String },
+            residentStreet: { type: String },
+            streetComplement: { type: String },
+            residentNeighborhood: { type: String },
+            residentCity: { type: String },
+            residentState: { type: String },
 
-    // Endereço
-    residentZipCode: { type: Number },
-    residentStreet: { type: String },
-    streetComplement: { type: String },
-    residentNeighborhood: { type: String },
-    residentCity: { type: String },
-    residentState: { type: String },
+            condoUnitIds: [ { type: Schema.Types.ObjectId, ref: 'CondoUnit', }, ],
 
-    // ID de relacionamento com o banco de dados das unidades do condomínio
-    condoUnits: [{ type: Schema.Types.ObjectId, ref: "CondoUnit" }],
-}, {
-    timestamps: true, // Adiciona campos de data de criação e modificação automaticamente
-});
+        }, { timestamps: true });
 
-// Exporta o modelo Resident do MongoDB 
-// (ou utiliza um modelo existente, se já estiver definido)
-export const Resident = models.Resident || model('Resident', ResidentSchema);
+    export const Resident = models.Resident || model('Resident', ResidentSchema);

@@ -1,6 +1,6 @@
 /* INFO-CARD - Estilos do cartão de informações dos moradores (info-card) */
 .infoCard {
-    @apply bg-white p-5 rounded-md border-2 border-slate-200 shadow-md;
+    @apply w-full bg-white p-5 rounded-md border-2 border-slate-200 ;
 }
 
 /* título do cartão de informações dos moradores */

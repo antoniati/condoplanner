@@ -1,29 +1,38 @@
-/* TABELA - Estilos padrão das Tabelas */
-.tableWrapper {
-    @apply p-5;
-}
-
 /* container da tabela  */
 .tableContainer {
-    @apply w-full h-auto max-h-96 overflow-auto bg-slate-50 rounded-md shadow-sm border-4 border-slate-300; 
+    @apply w-full h-auto max-h-96 bg-white-ghost border-2 border-slate-300 rounded-md shadow-sm overflow-auto;
+}
+
+/* Scroll Bars */
+.tableContainer::-webkit-scrollbar {
+    @apply w-3 h-3;
+}
+
+.tableContainer::-webkit-scrollbar-track {
+    @apply bg-slate-50 shadow-inner;
+}
+
+.tableContainer::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 rounded-full;
 }
 
 /* conteúdo da tabela */
 .tableContent {
-    @apply w-full ;
+    @apply w-full;
 }
 
 /* cabeçalho da tabela */
 .tableHeader {
-    @apply bg-slate-200 h-10 sticky top-0 ;
+    @apply w-full bg-gray-light h-10 sticky -top-0 z-20 rounded-md;
+    box-shadow: 0px 1px 0px 1px rgba(202, 212, 225, 1);
+}
+
+.tableHeader tr {
+    @apply border-b-2 border-slate-300;
 }
 
 .tableHeader th {
-    @apply p-3 whitespace-nowrap;
-}
-/* conteúdo do ultima célula do cabeçalho tabela */
-.tableHeaderRow th:last-child {
-    @apply w-52;
+    @apply border-2 border-slate-300 p-3 whitespace-nowrap;
 }
 
 /* corpo da tabela */
@@ -33,18 +42,26 @@
 
 /* linha com informações do conteúdo da tabela */
 .tableBodyRow td {
-    @apply p-2 text-lg text-center border-2 border-slate-300 whitespace-nowrap;
+    @apply w-72 p-2 text-lg text-center border-2 border-slate-300 whitespace-nowrap;
+}
+
+.tableBodyRowUnit td {
+    @apply w-72 p-2 text-lg text-center border-2 border-slate-300 whitespace-nowrap;
+}
+
+.tableBodyRowUnit td:last-child {
+    @apply flex items-center justify-center;
 }
 
 .tableBodyRow td:first-child {
-    @apply p-1 w-24 h-24 whitespace-nowrap
+    @apply w-24 h-24 flex border-t-0 whitespace-nowrap relative;
 }
 
 /* célula da tabela que contém o botão */
 .tableBodyRow td span {
-    @apply flex w-full items-center justify-center;
+    @apply flex items-center justify-center;
 }
 
 .tableBodyRow td img {
-    @apply flex object-cover whitespace-nowrap;
+    @apply w-20 h-20 object-cover rounded-md;
 }

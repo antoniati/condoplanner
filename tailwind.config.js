@@ -11,14 +11,17 @@ module.exports = {
       current: 'currentColor',
       // White And Black
       'white': '#ffffff',
+      'white-ghost': "#F8FAFC",
       'black': '#10182C',
-
+      
       // Blue
       'dark-blue': '#3f3cbb',
       'light-blue': '#6597FF',
       'luminous-blue': '#00D1FF',
-
+      
       // Gray
+      'dark-gray': '#444D5B',
+      'gray-light': '#F2F8FF',
       'slate-300': '#CAD4E1',
       'slate-200': '#DFE7EF',
       'slate-50': '#EEF6FB',

@@ -1,5 +1,5 @@
 .navAside {
-    @apply w-0 sm:w-96 p-10 lg:static fixed min-h-screen lg:left-0 top-0 -left-full text-white bg-dark-blue overflow-auto transition-all duration-300 z-10;
+    @apply w-0 sm:w-96 p-10 lg:static fixed min-h-screen lg:left-0 top-0 -left-full text-white bg-dark-blue overflow-auto transition-all duration-300 z-30;
 }
 
 .visibleNav {

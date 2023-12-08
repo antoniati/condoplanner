@@ -1,11 +1,7 @@
-// Importa o modelo User do MongoDB.
-import { User } from "@/models/User";
-
-// Importa a função de conexão com o MongoDB.
-import connectionWithMongoDB from "@/config/mongoose";
-
-// Importa o módulo bcrypt para hashing de senha.
-import bcrypt from "bcrypt";
+import { User } from "@/models/User"; // Importa o modelo User do MongoDB.
+import connectionWithMongoDB from "@/config/mongoose"; // Importa a função de conexão com o MongoDB.
+import bcrypt from "bcrypt"; // Importa o módulo bcrypt para hashing de senha.
+import { defaultErrorMessage } from "@/utils/constantsData/defaultErrorMessages"; // Importa mensagens de errro padrão
 
 // Função principal que manipula as requisições relacionadas à manipulação de dados dos usuários.
 export default async function handle(req, res) {
@@ -34,14 +30,14 @@ export default async function handle(req, res) {
             const existingUser = await User.findOne({ userEmail });
             if (existingUser) {
                 return res.status(400).json({
-                    error: "E-mail já está cadastrado.",
+                    error: defaultErrorMessage.existsData,
                 });
             }
 
             // Verifica se as senhas inseridas são iguais.
             if (userPassword !== confirmPassword) {
                 return res.status(400).json({
-                    errorMessage: "As senhas devem ser iguais.",
+                    errorMessage: defaultErrorMessage.differentPasswords,
                 });
             }
 
@@ -55,9 +51,10 @@ export default async function handle(req, res) {
             return res.status(201).json({
                 message: 'Usuário cadastrado com sucesso.',
             });
+
         } catch (error) {
             return res.status(500).json({
-                error: 'Erro no servidor.',
+                error: defaultErrorMessage.internalServerError,
             });
         }
     }

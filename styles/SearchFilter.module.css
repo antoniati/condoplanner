@@ -1,20 +1,25 @@
 /* SEARCH-FILTER */
 /* Estilos do componente de filtro de pesquisa */
 .searchFilter {
-    @apply flex p-5 gap-5 sm:gap-10 items-center flex-col sm:flex-row;
-  }
-  
- /* Estilos das opções de pesquisa do filtro de pesquisa */
-  .searchFilter div {
-    @apply w-full lg:w-96 flex flex-col gap-2;
-  }
-  
-  /* Estilos dos rótulos das opções dos filtros de pesquisa */
-  .searchFilter div label {
-    @apply text-xl tracking-wide;
-  }
-  
-  /* Estilos do texto informativo das opções dos filtros de pesquisa */
-  .searchFilter div span {
-    @apply text-xs text-black;
-  }
+  @apply flex p-5 gap-5 sm:gap-10 items-center flex-col sm:flex-row;
+}
+
+/* Estilos das opções de pesquisa do filtro de pesquisa */
+.searchFilter div {
+  @apply w-full lg:w-96 flex flex-col gap-2;
+}
+
+/* Estilos dos rótulos das opções dos filtros de pesquisa */
+.searchFilter div label {
+  @apply text-xl tracking-wide font-semibold;
+}
+
+.searchFilter div select,
+.searchFilter div input {
+  @apply w-full p-3 border-2 border-slate-300 rounded-sm outline-none focus:border-light-blue text-lg;
+}
+
+/* Estilos do texto informativo das opções dos filtros de pesquisa */
+.searchFilter div span {
+  @apply text-xs text-black;
+}

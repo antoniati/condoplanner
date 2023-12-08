@@ -23,7 +23,7 @@ const HeaderSection = ({
                 <h1> {headerTitle} </h1>
             </div>
             <span>
-                {children} 
+                {children}
             </span>
         </div>
     );

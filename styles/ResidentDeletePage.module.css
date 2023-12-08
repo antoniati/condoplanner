@@ -19,7 +19,7 @@
 }
 
 .residentDeletePageContent h2 span {
-    @apply flex flex-wrap gap-2;
+    @apply text-center flex flex-wrap items-center justify-center sm:justify-start;
 }
 
 .residentDeletePageContent p {

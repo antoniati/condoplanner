@@ -1,0 +1,11 @@
+.infoContent {
+      @apply bg-slate-50 p-10 rounded-md flex gap-2 flex-col items-center text-center sm:flex-row;
+}
+
+.infoContent p {
+      @apply text-xl tracking-widest text-black opacity-80;
+}
+
+.infoContent span {
+      @apply text-xl opacity-80;
+}

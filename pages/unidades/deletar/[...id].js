@@ -1,65 +1,46 @@
-// Biblioteca para fazer requisições HTTP
 import axios from "axios";
-
-// Hooks do React para efeitos colaterais e gerenciamento de estado
-import { useEffect, useState } from "react";
-
-// Hook do Next.js para obtenção do objeto de roteamento
 import { useRouter } from "next/router";
-
-import CustomButton from "@/components/CustomButton"; // Componente de botão personalizado
-import Layout from "@/components/Layout"; // Componente de layout principal
-import CustomModal from "@/components/CustomModal"; // Componente de modal personalizado
-
-// Ícones da biblioteca "react-icons/hi2"
+import { useEffect, useState } from "react";
 import { HiCheckBadge, HiOutlineExclamationTriangle } from "react-icons/hi2";
 
-// Estilos específicos da página
+import CustomButton from "@/components/CustomButton";
+import Layout from "@/components/Layout";
+import CustomModal from "@/components/CustomModal";
+
+import { fetchCondoUnitDataById } from "@/utils/fetchData/fetchCondoUnitDataById";
+
 import style from "@/styles/ResidentDeletePage.module.css";
 
-// Página para deletar uma unidade do condomínio
 const DeleteCondoUnitPage = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a abertura do modal
-    const router = useRouter(); // Objeto de roteamento do Next.js
-    const { id } = router.query; // Obtém o parâmetro de rota "id"
+    const [condoUnitData, setCondoUnitData] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const [condoUnitData, setCondoUnitData] = useState({}); // Estado para armazenar os dados da unidade
+    const router = useRouter();
+    const { id } = router.query;
 
-    // Função para buscar os dados da unidade
-    const fetchCondoUnitData = async () => {
-        try {
-            const response = await axios.get(`/api/condoUnitDetails/${id}`);
-            if (response.status === 200) {
-                setCondoUnitData(response.data.data);
-            } else {
-                console.error("Erro ao buscar dados da unidade");
-            }
-        } catch (error) {
-            console.error("Erro interno do servidor", error);
-        }
-    };
-
-    // Efeito colateral para buscar dados da unidade quando o "id" muda
     useEffect(() => {
+        const handleFetchCondoUnitData = async () => {
+            const condoUnit = await fetchCondoUnitDataById(id);
+            setCondoUnitData(condoUnit);
+        };
+
         if (id) {
-            fetchCondoUnitData();
+            handleFetchCondoUnitData();
         }
     }, [id]);
 
-    // Função para voltar à página de detalhes da unidade
     function handleGoBackPage() {
         router.push(`/unidades/detalhes/${id}`);
     }
 
-    // Função para lidar com a exclusão da unidade
     async function handleDeleteCondoUnit() {
         try {
-            // Faz uma requisição DELETE para o endpoint da API
-            const response = await axios.delete(`/api/condoUnitDelete/${id}`);
+
+            const response = await axios.delete(`/api/delete/deleteCondoUnit/${id}`);
 
             if (response.status === 200) {
-                // Se a exclusão for bem-sucedida, abre o modal de confirmação
                 setIsModalOpen(true);
+
             } else {
                 console.error('Erro ao deletar a unidade:', response.data.error);
             }

@@ -1,66 +1,59 @@
-// Biblioteca para fazer requisições HTTP
 import axios from "axios";
-
-// Hook do Next.js para obtenção do objeto de roteamento
 import { useRouter } from "next/router";
-
-// Hooks do React para efeitos colaterais e gerenciamento de estado
 import { useEffect, useState } from "react";
+import { HiBuildingOffice2, HiCheckBadge, HiTrash } from "react-icons/hi2";
 
-import Layout from "@/components/Layout"; // Layout principal da aplicação
-import HeaderSection from "@/components/HeaderSection"; // Componente de cabeçalho personalizado
-import InputForm from "@/components/InputForm"; // Componente de formulário de entrada personalizado
-import CustomButton from "@/components/CustomButton"; // Componente de botão personalizado
+import Layout from "@/components/Layout";
+import HeaderSection from "@/components/HeaderSection";
+import InputForm from "@/components/InputForm";
+import CustomButton from "@/components/Buttons/CustomButton";
+import CustomModal from "@/components/CustomModal";
 
-// Campos de entrada e opções de filtro para unidades de condomínio
-import { condoUnitInputFields, filterOptionsCondoUnits } from "@/utils/inputFields";
+import {
+    condoUnitDataInputFields,
+    filterOptionsCondoUnits
+} from "@/utils/inputFields/condoUnitInputFields";
 
-// Ícone de edifício de escritórios da biblioteca "react-icons/hi"
-import { HiBuildingOffice2 } from "react-icons/hi2";
-
-// Módulo de estilos para o formulário básico
 import style from "@/styles/BasicForm.module.css";
+import { fetchCondoUnitDataById } from "@/utils/fetchData/fetchCondoUnitDataById";
+import { defaultErrorMessage } from "@/utils/constantsData/defaultErrorMessages";
+import SpinnerBouceLoader from "@/components/Loadings/SpinnerBouceLoader";
+import { HiOutlineUpload } from "react-icons/hi";
 
-/**
- * Página de edição de unidade de condomínio.
- *
- * @returns {JSX.Element} Componente da página de edição de unidade de condomínio.
- */
-const EditCondoUnitPage = () => {
-    const [formData, setFormData] = useState({}); // Estado para armazenar os dados do formulário
-    const [errorMessage, setErrorMessage] = useState({}); // Estado para armazenar mensagens de erro
-    const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar a abertura do modal
+export default function EditCondoUnitPage() {
+    const [formData, setFormData] = useState({});
+    const [condoUnitImages, setCondoUnitImages] = useState([]);
+    const [errorMessage, setErrorMessage] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isUploadingImage, setIsUploadingImage] = useState(false);
+    const [currentCondoUnitImages, setCurrentCondoUnitImages] = useState([]);
 
-    const router = useRouter(); // Objeto de roteamento do Next.js
-    const { id } = router.query; // Obtém o parâmetro de rota "id"
+    const router = useRouter();
+    const { id } = router.query;
 
-    // Efeito colateral para buscar dados da unidade pelo ID quando o componente montar
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                if (id) {
-                    const response = await axios.get(`/api/condoUnitDetails/${id}`);
-                    const condoUnitData = response.data.data;
-
-                    setFormData(condoUnitData);
-                }
-            } catch (error) {
-                console.error('Erro ao buscar dados da unidade:', error);
-            }
+        const handleFetchCondoUnitData = async () => {
+            const condoUnit = await fetchCondoUnitDataById(id);
+            setFormData(condoUnit);
+            setCurrentCondoUnitImages(condoUnit.condoUnitImages || []);
         };
 
-        fetchData();
+        if (id) {
+            handleFetchCondoUnitData();
+        }
     }, [id]);
 
-    // Função para lidar com as mudanças nos campos de entrada
     const handleChangesInputFields = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+
+        setFormData({
+            ...formData,
+            [name]: value
+        });
 
         cleanErrorMessage(name);
     };
 
-    // Função para limpar mensagens de erro
     const cleanErrorMessage = (fieldName) => {
         setErrorMessage((prevErrors) => ({
             ...prevErrors,
@@ -68,23 +61,84 @@ const EditCondoUnitPage = () => {
         }));
     };
 
-    // Função para lidar com a atualização da unidade
-    const handleUpdateResident = async (e) => {
+    const handleUpdateCondoUnit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`/api/update/condoUnit/${id}`, formData);
+            // Clona o estado atual de formData para evitar modificações diretas no estado.
+            const updatedFormData = { ...formData };
+
+            // Inclui tanto as imagens existentes quanto as novas no corpo da requisição.
+            updatedFormData.condoUnitImages = [...currentCondoUnitImages, ...condoUnitImages];
+
+            // Envia a requisição de atualização com o novo formData.
+            const response = await axios.put(`/api/update/updateCondoUnit/${id}`, updatedFormData);
 
             if (response.data.success) {
                 setIsModalOpen(true);
-            } else {
-                console.error('Erro ao atualizar unidade:', response.data.error);
             }
+
         } catch (error) {
-            console.error('Erro ao enviar requisição de atualização:', error);
+            if (error.response?.status === 404) {
+                throw new Error(`${defaultErrorMessage.dataNotFound} : ${error.message}`);
+            } else if (error.response?.status === 405) {
+                throw new Error(`${defaultErrorMessage.methodNotAllowed} / ${error.response.status}`);
+            }
+            throw new Error(`${defaultErrorMessage.internalServerError} / ${error.message}`);
         }
     };
 
-    // Função para navegar de volta à página de detalhes da unidade
+    const handleUploadCondoUnitImages = async (e) => {
+        const files = e.target?.files;
+
+        if (files.length + currentCondoUnitImages.length > 3) {
+            setErrorMessage({ images: "Só é possível enviar até 3 imagens." });
+            setTimeout(() => cleanErrorMessage("images"), 5000);
+            return;
+        }
+
+        setErrorMessage({ images: "" });
+
+        if (files.length > 0) {
+            setIsUploadingImage(true);
+
+            const data = new FormData();
+
+            for (const file of files) {
+                data.append('file', file);
+            }
+
+            try {
+                const res = await axios.post("/api/uploadImages", data);
+
+                // Adiciona as novas imagens ao estado, sem substituir as existentes
+                setCondoUnitImages((prevImages) => [...prevImages, ...res.data.links]);
+
+                setIsUploadingImage(false);
+            } catch (error) {
+                console.error("Erro na solicitação de upload:", error);
+                setIsUploadingImage(false);
+            }
+        }
+    };
+
+    const handleRemoveImage = (index, isNewImage) => {
+        if (isNewImage) {
+            // Remove a imagem do estado de condoUnitImages
+            setCondoUnitImages((prevImages) => {
+                const updatedImages = [...prevImages];
+                updatedImages.splice(index, 1);
+                return updatedImages;
+            });
+        } else {
+            // Remove a imagem do estado de currentCondoUnitImages
+            setCurrentCondoUnitImages((prevImages) => {
+                const updatedImages = [...prevImages];
+                updatedImages.splice(index, 1);
+                return updatedImages;
+            });
+        }
+    };
+
     const handleGoBackPage = () => {
         router.push(`/unidades/detalhes/${id}`);
     };
@@ -100,13 +154,14 @@ const EditCondoUnitPage = () => {
                     editar as informações da unidade.
                 </p>
             </HeaderSection>
-            <section className={style.formContainer}>
-                <form className={style.formContent} onSubmit={handleUpdateResident}>
-                    <h2 className={style.titleForm}>
+            <section className={"mainWrapper"}>
+                <form className={"sectionContainer"} onSubmit={handleUpdateCondoUnit}>
+                    <h2 className={"defaultTitle"}>
                         Dados da Unidade
                     </h2>
+
                     <div className="flex gap-5 py-5 flex-wrap">
-                        {condoUnitInputFields.map((field, index) => (
+                        {condoUnitDataInputFields.map((field, index) => (
                             <InputForm
                                 key={index}
                                 inputLabelText={field.label}
@@ -118,31 +173,96 @@ const EditCondoUnitPage = () => {
                                 errorMessage={errorMessage[field.name]}
                             />
                         ))}
-                    </div>
-                    <div className={style.formOption}>
-                        <label>Status</label>
-                        <select
-                            value={formData.condoUnitStatus}
-                            onChange={handleChangesInputFields}
-                            className={errorMessage && "error-input" || ""}
-                        >
-                            <option value="">Selecione um Status</option>
-                            {filterOptionsCondoUnits.map((option) => (
-                                <option
-                                    key={option.value}
-                                    value={option.value}
-                                >
-                                    {option.label}
+                        <div className={style.formOption}>
+                            <label> Status</label>
+                            <select
+                                name="condoUnitStatus"
+                                value={formData.condoUnitStatus}
+                                onChange={handleChangesInputFields}
+                                className={errorMessage && "error-input" || ""}
+                            >
+                                <option value="">
+                                    Selecione um Status
                                 </option>
-                            ))}
-                        </select>
+                                {/* Mapeamento das opções de filtro para o status da unidade */}
+                                {filterOptionsCondoUnits.map((option) => (
+                                    <option key={option.value} value={option.value} >
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+
+                            {/* Exibição de mensagem de erro para o status da unidade */}
+                            {errorMessage.condoUnitStatus && (
+                                <p className="error-message">
+                                    {errorMessage.condoUnitStatus}
+                                </p>
+                            )}
+                        </div>
                     </div>
+
+                    <section className={style.formUploadImages}>
+                        <label> Imagens da Unidade </label>
+                        <div>
+                            <label>
+                                <HiOutlineUpload size={26} />
+                                <h3> Upload </h3>
+                                <input
+                                    type="file"
+                                    className="hidden"
+                                    onChange={handleUploadCondoUnitImages}
+                                />
+                            </label>
+
+                            {currentCondoUnitImages.map((link, index) => (
+                                <div key={`existing-${index}`} className="relative">
+                                    <img
+                                        src={link}
+                                        alt={`Imagem ${index + 1}`}
+                                        className="w-24 h-24 rounded-md object-cover"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => handleRemoveImage(index)}
+                                        className="bg-red-400 hover:bg-red-500 p-2 rounded-full absolute -top-2 -right-3 shadow-sm transition-all duration-300"
+                                    >
+                                        <HiTrash size={20} color="#FFF" />
+                                    </button>
+                                </div>
+                            ))}
+
+                            {/* Mapeia sobre as novas imagens enviadas */}
+                            {condoUnitImages.map((link, index) => (
+                                <div key={`new-${index}`} className="relative">
+                                    <img
+                                        src={link}
+                                        alt={`Nova Imagem ${index + 1}`}
+                                        className="w-24 h-24 rounded-md object-cover"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => handleRemoveImage(index, true)}
+                                        className="bg-red-400 hover:bg-red-500 p-2 rounded-full absolute -top-2 -right-3 shadow-sm transition-all duration-300"
+                                    >
+                                        <HiTrash size={20} color="#FFF" />
+                                    </button>
+                                </div>
+                            ))}
+
+                            {isUploadingImage && <SpinnerBouceLoader />}
+                        </div>
+
+                        {errorMessage.condoUnitStatus && (
+                            <span> <p> {errorMessage.condoUnitStatus}</p> </span>
+                        )}
+                    </section>
+
                     <section className={`${style.buttonsForm} mt-5`}>
                         <CustomButton
                             buttonType="submit"
                             buttonText={"Salvar Edição"}
                             buttonStyle="blue-button"
-                            buttonFunction={handleUpdateResident}
+                            buttonFunction={handleUpdateCondoUnit}
                         />
                         <CustomButton
                             buttonType="button"
@@ -152,9 +272,17 @@ const EditCondoUnitPage = () => {
                         />
                     </section>
                 </form>
-            </section>
-        </Layout>
+            </section >
+
+            {isModalOpen && (
+                <CustomModal
+                    modalIcon={<HiCheckBadge color="#23C366" size={56} />}
+                    modalTitle="Editado com Sucesso!"
+                    modalDescription="As informações foram editadas com sucesso."
+                    functionToCloseModal={handleGoBackPage}
+                />
+            )
+            }
+        </Layout >
     );
 };
-
-export default EditCondoUnitPage;

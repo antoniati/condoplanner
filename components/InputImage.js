@@ -33,9 +33,11 @@ const InputImage = ({ onImageSelect }) => {
     };
 
     return (
-        <div className={`${style.formOption} mt-4`}>
-            <label htmlFor="profileImage">Imagem de Perfil</label>
-            <label className="cursor-pointer flex overflow-hidden items-center justify-between gap-4 h-16 border-2 rounded-md border-slate-200">
+        <div className={style.formOption}>
+            <label htmlFor="profileImage" className="">
+                Imagem de Perfil
+            </label>
+            <label className="mt-2 cursor-pointer flex overflow-hidden items-center justify-between gap-4 h-14 border-2 rounded-sm border-slate-300">
                 <span className="flex flex-wrap gap-2 ml-4 text-sm">
                     <span className=" hidden sm:flex">
                         <HiOutlineUpload size={20} />
@@ -50,16 +52,16 @@ const InputImage = ({ onImageSelect }) => {
                     onChange={handleUploadProfileImage}
                 />
                 {selectedImage ? (
-                    <img
-                        src={selectedImage}
-                        alt="Imagem de Perfil"
-                        className="w-16 h-16 object-cover border-2 border-slate-200"
-                    />
-                ) : (
-                    <span className="w-16 h-16 flex items-center justify-center text-gray-500 bg-slate-50">
-                        {isUploading ? <Spinner /> : setSelectedImage("/images/perfil-img.png")}
-                    </span>
-                )}
+                    isUploading ? (
+                        <span className="pr-2"> <Spinner /> </span>
+                    ) : (
+                        <img
+                            src={selectedImage || currentImage}
+                            alt="Imagem de Perfil"
+                            className="w-16 h-16 object-cover border-2 border-slate-200 rounded-r-sm"
+                        />
+                    )
+                ) : setSelectedImage("/images/perfil-img.png")}
             </label>
         </div>
     );

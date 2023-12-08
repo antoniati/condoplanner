@@ -1,12 +1,7 @@
 /* CUSTOM BUTTON */
 /* Estilos do botão personalizado */
 .customButton {
-    @apply w-full sm:w-72 md:w-auto text-lg tracking-wider py-3 px-4 rounded text-white border-2 flex justify-center transition-all duration-300;
-}
-
-/* Estilos do texto do botão personalizado */
-.customButton span {
-    @apply flex gap-2 font-medium;
+    @apply w-full sm:w-auto h-14 py-3 px-4 text-center gap-5 font-medium text-lg tracking-wider rounded-md text-white border-2 flex items-center justify-center transition-all duration-300;
 }
 
 /* Estilos do botão personalizado azul */
@@ -17,6 +12,11 @@
 /* Estilos do botão personalizado preto */
 .customButtonBlack {
     @apply border-black bg-black hover:border-luminous-blue;
+}
+
+/* Estilos do botão personalizado cinza */
+.customButtonGray {
+    @apply border-dark-gray bg-dark-gray hover:border-luminous-blue;
 }
 
 /* Estilos do botão personalizado vermelho */

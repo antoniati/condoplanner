@@ -1,0 +1,7 @@
+.infoContent {
+      @apply bg-slate-50 p-10 rounded-md flex items-center gap-2;
+}
+
+.infoContent p {
+      @apply text-xl tracking-widest text-dark-blue font-semibold;
+}
