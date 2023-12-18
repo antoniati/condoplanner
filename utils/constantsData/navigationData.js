@@ -1,5 +1,5 @@
-import {
-    HiBuildingOffice2,
+import { FaBuilding } from "react-icons/fa6";
+import {    
     HiClipboardDocumentList,
     HiSquares2X2,
     HiUserGroup
@@ -12,7 +12,7 @@ export const navItems = [
         navText: "Painel"
     },
     {
-        navLink: "/acessos",
+        navLink: "/acessos/listadeacessos",
         navIcon: <HiClipboardDocumentList size={24} />,
         navText: "Acessos"
     },
@@ -23,7 +23,7 @@ export const navItems = [
     },
     {
         navLink: "/unidades/listadeunidades",
-        navIcon: <HiBuildingOffice2 size={24} />,
+        navIcon: <FaBuilding size={24} />,
         navText: "Unidades"
     },
 ];

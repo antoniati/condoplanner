@@ -13,7 +13,7 @@ export default async function handle(request, response) {
 
             switch (method) {
                   case "GET":
-                        const residentData = await Resident.findById(id).populate("condoUnitIds");
+                        const residentData = await Resident.findById(id).populate("condoUnitIds").populate("accessLogs");
 
                         if (residentData) {
                               return handleApiResponses.handleRequestSuccess(

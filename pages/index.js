@@ -17,21 +17,23 @@ export default function HomePage() {
         await new Promise((resolve) => setTimeout(resolve, 500));
 
         if (session) {
-            <Dashboard />
+            setIsLoading(false);
         } else {
             setIsLoading(false);
-        };
+        }
     };
 
     const displayContentBasedOnSession = () => {
         if (isLoading) {
             return <PageLoading />;
-        } else if (!session) {
-            return <LoginPage />;
-        } else {
-            return <Dashboard />;
         }
+
+        if (!session) {
+            return <LoginPage />;
+        }
+
+        return <Dashboard />;
     };
 
     return displayContentBasedOnSession();
-};
+}

@@ -1,88 +1,107 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { HiCheckBadge } from "react-icons/hi2";
-
-import CondoUnitData from "@/components/CondoUnitForm/CondoUnitData";
-import CondoUnitHolderData from "@/components/CondoUnitForm/CondoUnitHolderData";
+import { HiBuildingOffice2, HiCheckBadge } from "react-icons/hi2";
+import HeaderSection from "@/components/HeaderSection";
+import CondoUnitForm from "@/components/CondoUnits/CondoUnitForm/CondoUnitForm";
+import CondoUnitResidentsForm from "@/components/CondoUnits/CondoUnitForm/CondoUnitResidentsForm";
 import CustomModal from "@/components/CustomModal";
 import { defaultErrorMessage } from "@/utils/constantsData/defaultErrorMessages";
 
 const CondoUnitFormManager = () => {
-    const [residentData, setResidentData] = useState({});
+    const [condoUnitData, setCondoUnitData] = useState({});
     const [currentStep, setCurrentStep] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const router = useRouter();
 
-    const handleFirstSubmit = async (residentHolderId) => {
-
-        setResidentData({
-            ...residentData,
-            ...residentHolderId
+    const handleFirstSubmit = async (dataFromCondoUnitForm) => {
+        setCondoUnitData({
+            ...condoUnitData,
+            ...dataFromCondoUnitForm
         });
 
         setCurrentStep(2);
-        window.scrollTo({ top: 10, behavior: 'smooth' });
+
+        window.scrollTo({
+            top: 10,
+            behavior: 'smooth'
+        });
     };
 
-    const handleLastSubmit = async (condoUnitData) => {
+    const handleLastSubmit = async (dataFromCondoResidentsForm) => {
 
-        const finalData = {
-            ...residentData,
-            ...condoUnitData
+        const finalDataToCreateCondoUnit = {
+            ...condoUnitData,
+            ...dataFromCondoResidentsForm
         };
 
         try {
+            await axios.post(
+                '/api/create/condo-units',
+                finalDataToCreateCondoUnit
+            );
 
-            await axios.post('/api/create/condo-units', finalData);
             setIsModalOpen(true);
 
         } catch (error) {
-            console.log(`${defaultErrorMessage.internalServerError}, ${error.message}`);
-        }
+            console.log(
+                `${defaultErrorMessage.internalServerError}`,
+                error.message
+            );
+        };
     };
 
-    const handleGoBackStep = () => {
+    const handleGoBackPage = () => {
         setCurrentStep(1);
-        window.scrollTo({ top: 10, behavior: 'smooth' });
 
+        window.scrollTo({
+            top: 10,
+            behavior: 'smooth'
+        });
     };
 
     const handleCloseModal = () => {
+        router.push("/unidades/listadeunidades");
         setIsModalOpen(false);
-        router.push("/unidades");
-
     };
-
 
     return (
         <>
-            {/* Formulário de Dados Pessoais do Titular */}
-            {currentStep === 1 && (
-                <CondoUnitHolderData
-                    onSubmit={handleFirstSubmit}
-                    prevData={residentData}
-                />
-            )}
+            <HeaderSection
+                headerIcon={<HiBuildingOffice2 />}
+                headerTitle={"Formulário de Cadastro de Unidade"}
+            />
 
-            {/* Formulário de Dados da Unidade */}
-            {currentStep === 2 && (
-                <CondoUnitData
-                    onSubmit={handleLastSubmit}
-                    onBack={handleGoBackStep}
-                />
-            )}
+            <section className="mainWrapper">
+                {currentStep === 1 && (
+                    <CondoUnitForm
+                        onSubmit={handleFirstSubmit}
+                        prevData={condoUnitData}
+                    />
+                )}
 
-            {/* Modal de confirmação de cadastro */}
-            {isModalOpen && (
-                <CustomModal
-                    modalIcon={<HiCheckBadge color="#23C366" size={56} />}
-                    modalTitle="Cadastrado com Sucesso!"
-                    modalDescription="Seu cadastro foi realizado com sucesso."
-                    functionToCloseModal={handleCloseModal}
-                />
-            )}
+                {currentStep === 2 && (
+                    <CondoUnitResidentsForm
+                        onSubmit={handleLastSubmit}
+                        onBack={handleGoBackPage}
+                    />
+                )}
+
+                {isModalOpen && (
+                    <CustomModal
+                        modalTitle="Cadastrado com Sucesso!"
+                        modalDescription="Seu cadastro foi realizado com sucesso."
+                        functionToCloseModal={handleCloseModal}
+                        modalIcon={
+                            <HiCheckBadge
+                                color="#23C366"
+                                size={56}
+                            />
+                        }
+                    />
+                )}
+            </section>
         </>
     );
 };

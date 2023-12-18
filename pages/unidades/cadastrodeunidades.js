@@ -1,8 +1,7 @@
 // Importação do componente de layout
 import Layout from "@/components/Layout";
+import CondoUnitFormManager from "@/components/CondoUnits/CondoUnitForm/CondoUnitFormManager";
 
-// Importação do componente de gerenciamento de formulário de unidades
-import CondoUnitFormManager from "@/components/CondoUnitForm/CondoUnitFormManager";
 
 export default function CondoUnitRegisterPage() {
     return (

@@ -6,7 +6,8 @@ import Logo from "@/components/Logo";
 import { navItems } from "@/utils/constantsData/navigationData";
 import style from '@/styles/NavAside.module.css';
 
-const NavAside = ({ show }) => {
+const NavAside = ({ show, isLoading }) => {
+
     const router = useRouter();
 
     const isPathActive = (navLink) => {
@@ -14,13 +15,12 @@ const NavAside = ({ show }) => {
             ? style.navActiveLink
             : style.navInactiveLink;
     };
-
     return (
         <aside
             className={`
-                ${style.navAside} 
-                ${show ? style.visibleNav : ""}
-            `}>
+                    ${style.navAside} 
+                    ${show ? style.visibleNav : ""}
+                `}>
             <Link href={navItems[0].navLink}>
                 <Logo logoInCol={"col"} />
             </Link>
@@ -28,18 +28,20 @@ const NavAside = ({ show }) => {
                 <ul>
                     {navItems && navItems.map(navItem => (
                         <li key={navItem.navLink}>
-                            <Link
-                                href={navItem.navLink}
-                                className={`
+                            <button type="button" onClick={isLoading} className="w-full">
+                                <Link
+                                    href={navItem.navLink}
+                                    className={`
                                     ${isPathActive(navItem.navLink)} 
                                     ${style.navLink}
-                                `}
-                            >
-                                {navItem.navIcon}
-                                <span>
-                                    {navItem.navText}
-                                </span>
-                            </Link>
+                                    `}
+                                >
+                                    {navItem.navIcon}
+                                    <span>
+                                        {navItem.navText}
+                                    </span>
+                                </Link>
+                            </button>
                         </li>
                     ))}
                     <li>
@@ -48,7 +50,7 @@ const NavAside = ({ show }) => {
                             onClick={() => signOut()}
                             className={
                                 `${isPathActive("/logout")} 
-                                ${style.navLink}`
+                                    ${style.navLink}`
                             }
                         >
                             <HiOutlineArrowLeftOnRectangle size={24} />

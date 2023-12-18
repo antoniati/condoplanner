@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { HiCheckBadge, HiOutlineExclamationTriangle } from "react-icons/hi2";
 
-import CustomButton from "@/components/CustomButton";
+import CustomButton from "@/components/Buttons/CustomButton";
 import Layout from "@/components/Layout";
 import CustomModal from "@/components/CustomModal";
 
@@ -94,7 +94,7 @@ const DeleteCondoUnitPage = () => {
                     modalIcon={<HiCheckBadge color="#23C366" size={56} />}
                     modalTitle="Excluído com Sucesso!"
                     modalDescription="A unidade foi excluída com sucesso."
-                    functionToCloseModal={() => router.push("/unidades")}
+                    functionToCloseModal={() => router.push("/unidades/listadeunidades")}
                 />
             )}
         </Layout>

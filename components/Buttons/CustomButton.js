@@ -43,7 +43,6 @@ const CustomButton = ({
             href={linkURL}
             onClick={buttonFunction}
         >
-            {/* Ícone do botão */}
             {buttonIcon}
             {buttonText}
         </button>

@@ -3,13 +3,14 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { HiCheckBadge, HiOutlineExclamationTriangle } from "react-icons/hi2";
 
-import CustomButton from "@/components/CustomButton";
+import CustomButton from "@/components/Buttons/CustomButton";
 import Layout from "@/components/Layout";
 import CustomModal from "@/components/CustomModal";
 
 import { fetchResidentDataById } from "@/utils/fetchData/fetchResidentById";
 
 import style from "@/styles/ResidentDeletePage.module.css";
+import { defaultErrorMessage } from "@/utils/constantsData/defaultErrorMessages";
 
 export default function DeleteResidentPage() {
     const [residentData, setResidentData] = useState({});
@@ -29,26 +30,31 @@ export default function DeleteResidentPage() {
         }
     }, [id]);
 
-    const handleGoBackPage = () => router.push(`/moradores/perfil/${id}`);
+    const handleGoBackPage = () => router.push(
+        `/moradores/perfil/${id}`
+    );
 
     async function handleDeleteResident() {
         try {
 
-            const response = await axios.delete(`/api/delete/deleteResident/${id}`);
+            const response = await axios.delete(
+                `/api/delete/deleteResident/${id}`
+            );
 
             if (response.status === 200) {
                 setIsModalOpen(true);
-            } else {
-                console.error('Erro ao deletar o morador:', response.data.error);
             }
         } catch (error) {
-            console.error('Erro ao deletar o morador:', error.message);
+            console.error(
+                `${defaultErrorMessage.internalServerError}`,
+                error.message
+            );
         }
     }
 
     return (
         <Layout>
-            <section className={style.residentDeletePage}>
+            <section className={"mainWrapper"}>
                 <div className={style.residentDeletePageContent}>
                     <h1>
                         <HiOutlineExclamationTriangle size={36} />
@@ -57,9 +63,13 @@ export default function DeleteResidentPage() {
                     <h2>
                         Você deseja Deletar o Morador?
                         <span>
-                            <b>{residentData.residentFullName} &nbsp;-&nbsp;</b>
+                            <b>
+                                {residentData.residentFullName}
+                                &nbsp;-&nbsp;
+                            </b>
                             <span>
-                                <b>RG:&nbsp;</b>{residentData.residentRgNumber}
+                                <b>RG:&nbsp;</b>
+                                {residentData.residentRgNumber}
                             </span>
                         </span>
                     </h2>
@@ -85,10 +95,17 @@ export default function DeleteResidentPage() {
 
             {isModalOpen && (
                 <CustomModal
-                    modalIcon={<HiCheckBadge color="#23C366" size={56} />}
                     modalTitle="Excluído com Sucesso!"
                     modalDescription="O Morador foi excluído com sucesso."
-                    functionToCloseModal={() => router.push("/moradores")}
+                    functionToCloseModal={() =>
+                        router.push("/moradores/listademoradores")
+                    }
+                    modalIcon={
+                        <HiCheckBadge
+                            color="#23C366"
+                            size={56}
+                        />
+                    }
                 />
             )}
         </Layout>

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { HiPlusCircle, HiBuildingOffice2 } from "react-icons/hi2";
+import { HiPlusCircle  } from "react-icons/hi2";
 import Layout from "@/components/Layout";
 import HeaderSection from "@/components/HeaderSection";
 import CustomButton from "@/components/Buttons/CustomButton";
@@ -8,6 +8,7 @@ import SearchFilters from "@/components/SearchFilter";
 import CondoUnitTable from "@/components/CondoUnits/CondoUnitTable";
 import LoadingDataMessage from "@/components/Loadings/LoadingDataMessage";
 import { filterOptionsCondoUnits } from "@/utils/inputFields/condoUnitInputFields";
+import { FaBuilding } from "react-icons/fa6";
 
 export default function CondoUnitsPage({ condoUnitsData, isLoadingData }) {
     const [filter, setFilter] = useState({ type: "all", query: "" });
@@ -20,7 +21,7 @@ export default function CondoUnitsPage({ condoUnitsData, isLoadingData }) {
     return (
         <Layout>
             <HeaderSection
-                headerIcon={<HiBuildingOffice2 size={36} />}
+                headerIcon={<FaBuilding size={36} />}
                 headerTitle={"Unidades"}
             >
                 <CustomButton
@@ -29,28 +30,30 @@ export default function CondoUnitsPage({ condoUnitsData, isLoadingData }) {
                     buttonStyle={'blue-button'}
                     buttonType={"button"}
                     buttonFunction={() =>
-                        router.push("/unidades/cadastro")
+                        router.push("/unidades/cadastrodeunidades")
                     }
                 />
             </HeaderSection>
 
             <section className={"mainWrapper"}>
-                <SearchFilters
-                    searchTitle={"Unidades"}
-                    placeHolder={"Número da unidade, ou CPF do títular"}
-                    selectTextInfo={"Selecione um status da unidade para Listar"}
-                    inputTextInfo={"Insira Número da unidade ou CPF do titular para Pesquisar"}
-                    filterOptions={filterOptionsCondoUnits}
-                    onFilterChange={handleFilterChange}
-                />
-                {isLoadingData ? (
-                    <LoadingDataMessage />
-                ) : (
-                    <CondoUnitTable
-                        filter={filter}
-                        condoUnitsData={condoUnitsData}
+                <section className="sectionContainer">
+                    <SearchFilters
+                        searchTitle={"Unidades"}
+                        placeHolder={"Número da unidade, ou CPF do títular"}
+                        selectTextInfo={"Selecione um status da unidade para Listar"}
+                        inputTextInfo={"Insira Número da unidade ou CPF do titular para Pesquisar"}
+                        filterOptions={filterOptionsCondoUnits}
+                        onFilterChange={handleFilterChange}
                     />
-                )}
+                    {isLoadingData ? (
+                        <LoadingDataMessage />
+                    ) : (
+                        <CondoUnitTable
+                            filter={filter}
+                            condoUnitsData={condoUnitsData}
+                        />
+                    )}
+                </section>
             </section>
         </Layout >
     );

@@ -14,7 +14,11 @@
     @apply w-72 sm:w-auto flex  flex-col sm:flex-row items-center justify-center lg:justify-end gap-5 sm:mt-0 mt-5 transition-all duration-300;
 }
 
-/* Estilos da descrição do cabeçalho das sessões */
 .headerSection p {
     @apply w-96;
+}
+
+/* Estilios do icone do cabeçalho das sessões */
+.headerSection i {
+    @apply text-3xl;
 }

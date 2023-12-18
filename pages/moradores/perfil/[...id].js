@@ -5,12 +5,11 @@ import Layout from "@/components/Layout";
 import HeaderSection from "@/components/HeaderSection";
 import CustomButton from "@/components/Buttons/CustomButton";
 import LoadingDataMessage from "@/components/Loadings/LoadingDataMessage";
-import DataNotFoundMessage from "@/components/Loadings/DataNotFoundMessage";
 import { fetchResidentDataById } from "@/utils/fetchData/fetchResidentById";
 import { defaultErrorMessage } from "@/utils/constantsData/defaultErrorMessages";
 import { applyCPFMask, applyRGMask, formatDate, formatDateTime } from "@/utils/inputFields/inputFieldsMask";
 import style from "@/styles/ResidentInfoCard.module.css";
-import styleTable from "@/styles/BasicTable.module.css";
+import DataNotFoundMessage from "@/components/Loadings/DataNotFoundMessage";
 
 export default function PerfilPage() {
     const [residentData, setResidentData] = useState({});
@@ -20,8 +19,6 @@ export default function PerfilPage() {
     const { id } = router.query;
 
     useEffect(() => {
-        setIsLoadingData(true);
-
         if (id) {
             handleFetchResidentData();
         }
@@ -43,15 +40,11 @@ export default function PerfilPage() {
     return (
         <Layout>
             <HeaderSection
-                headerIcon={<HiUser size={36} />}
+                headerIcon={<HiUser />}
                 headerTitle={"Perfil do Morador"}
             >
                 <CustomButton
-                    buttonIcon={
-                        <HiPencilSquare
-                            size={24}
-                            color="#FFF" />
-                    }
+                    buttonIcon={<HiPencilSquare size={24} />}
                     buttonText={"Editar Morador"}
                     buttonStyle={"blue-button"}
                     buttonType={"button"}
@@ -60,11 +53,7 @@ export default function PerfilPage() {
                     }
                 />
                 <CustomButton
-                    buttonIcon={
-                        <HiTrash
-                            size={24}
-                            color="#FFF" />
-                    }
+                    buttonIcon={<HiTrash size={24} />}
                     buttonText={"Excluir"}
                     buttonStyle={"red-button"}
                     buttonType={"button"}
@@ -73,6 +62,7 @@ export default function PerfilPage() {
                     }
                 />
             </HeaderSection>
+
             {isLoadingData ? (
                 <div className="mainWrapper">
                     <LoadingDataMessage />
@@ -98,6 +88,7 @@ export default function PerfilPage() {
                                 <section>
                                     <img
                                         alt="Foto do Morador"
+                                        className="rounded-md"
                                         src={
                                             residentData?.residentImage
                                             || "/images/perfil-img.png"
@@ -125,11 +116,9 @@ export default function PerfilPage() {
                                             }
                                         </li>
                                         <li>
-                                            <b>Data de N
-
-                                                asc:</b> {residentData?.residentCpfNumber &&
-                                                    formatDate(residentData?.dateOfBirthOfResident)
-                                                    || "N/A"
+                                            <b>Data de Nasc:</b> {residentData?.residentCpfNumber &&
+                                                formatDate(residentData?.dateOfBirthOfResident)
+                                                || "N/A"
                                             }
                                         </li>
                                     </div>
@@ -147,7 +136,7 @@ export default function PerfilPage() {
                                             {residentData?.residentEmail}
                                         </li>
                                         <li>
-                                            <b>Nº Contato:</b>
+                                            <b>Contato:</b>
                                             {residentData?.residentContactPhone}
                                         </li>
                                     </div>
@@ -155,60 +144,86 @@ export default function PerfilPage() {
                             </ul>
                         </div>
                     </section>
-
-                    <section className={style.infoCard}>
-                        <h2 className={style.titleInfoCard}>
+                    <section className="sectionContainer">
+                        <h2 className={"defaultTitle"}>
                             Unidades
                         </h2>
-                        <div className={style.infoCardContent}>
-
-                            {residentData.condoUnitIds?.length > 0 ? (
-                                <div className={styleTable.tableWrapper}>
-                                    <table className={styleTable.tableContent}>
-                                        <thead className={styleTable.tableHeader}>
-                                            <tr className={styleTable.tableHeaderRow}>
+                        {residentData.condoUnitIds.length === 0 && (
+                            <DataNotFoundMessage />
+                        ) || (
+                                <section className={"basicTable"}>
+                                    <table>
+                                        <thead>
+                                            <tr>
                                                 <th>Número da Unidade</th>
                                                 <th>Bloco</th>
-                                                <th>Status</th>
+                                                <th>Tipo de Unidade</th>
+                                                <th>Status de Acesso</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
-                                        <tbody className={styleTable.tableBody}>
-                                            {residentData.condoUnitIds.map((condoUnit) => (
-                                                <tr
-                                                    key={condoUnit._id}
-                                                    className={styleTable.tableBodyRowUnit}
-                                                >
+                                        <tbody>
+                                            {residentData.condoUnitIds.map((condoUnit, index) => (
+                                                <tr key={index} >
                                                     <td>{condoUnit.condoUnitNumber || 'N/A'}</td>
                                                     <td>{condoUnit.condoUnitBlock || 'N/A'}</td>
-                                                    <td>{condoUnit.condoUnitStatus || 'N/A'}</td>
+                                                    <td>{condoUnit.typeOfCondoUnit || 'N/A'}</td>
+                                                    <td>{residentData.accessLogs.length === 0 ? "N/A" : (
+                                                        () => {
+                                                            const currentDate = new Date();
+                                                            let activeAccess = null;
+                                                            let pendingAccess = null;
+                                                            let finalizedAccess = null;
+
+                                                            residentData.accessLogs.forEach(accessLog => {
+                                                                const startDate = new Date(accessLog.checkIn);
+                                                                const endDate = new Date(accessLog.checkOut);
+
+                                                                if (accessLog.statusAccessLog === "ativo") {
+                                                                    activeAccess = accessLog;
+                                                                } else if (accessLog.statusAccessLog === "pendente" && startDate > currentDate && (!pendingAccess || startDate < new Date(pendingAccess.checkIn))) {
+                                                                    pendingAccess = accessLog;
+                                                                } else if (accessLog.statusAccessLog === "finalizado" && (!finalizedAccess || endDate > new Date(finalizedAccess.checkOut))) {
+                                                                    finalizedAccess = accessLog;
+                                                                }
+                                                            });
+
+                                                            if (activeAccess) {
+                                                                return "Ativo";
+                                                            } else if (pendingAccess) {
+                                                                return "Pendente";
+                                                            } else if (finalizedAccess) {
+                                                                return "Finalizado";
+                                                            }
+
+                                                            return "N/A";
+                                                        })()
+                                                    }
+                                                    </td>
                                                     <td>
-                                                        <CustomButton
-                                                            buttonIcon={
-                                                                <HiEye
-                                                                    size={24}
-                                                                    color="#FFF" />
-                                                            }
-                                                            buttonText={"Ver Unidade"}
-                                                            buttonStyle={"black-button"}
-                                                            buttonType={"button"}
-                                                            buttonFunction={() =>
-                                                                router.push(`/unidades/detalhes/${condoUnit._id}`)
-                                                            }
-                                                        />
+                                                        <span>
+                                                            <CustomButton
+                                                                buttonIcon={
+                                                                    <HiEye
+                                                                        size={24}
+                                                                        color="#FFF" />
+                                                                }
+                                                                buttonText={"Ver Unidade"}
+                                                                buttonStyle={"black-button"}
+                                                                buttonType={"button"}
+                                                                buttonFunction={() =>
+                                                                    router.push(`/unidades/detalhes/${condoUnit._id}`)
+                                                                }
+                                                            />
+                                                        </span>
                                                     </td>
                                                 </tr>
                                             ))}
                                         </tbody>
                                     </table>
-                                </div>) : (
-                                <div className="w-full">
-                                    <DataNotFoundMessage />
-                                </div>
+                                </section>
                             )}
-                        </div>
                     </section>
-
                     <section className={style.infoCard}>
                         <h2 className={style.titleInfoCard}>Endereço</h2>
                         <div className={style.infoCardContent}>
@@ -246,6 +261,7 @@ export default function PerfilPage() {
                             </ul>
                         </div>
                     </section>
+
                 </div>
             )}
         </Layout>

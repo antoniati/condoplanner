@@ -18,6 +18,7 @@ module.exports = {
       'dark-blue': '#3f3cbb',
       'light-blue': '#6597FF',
       'luminous-blue': '#00D1FF',
+      'purple-blue': '#aebde1',
       
       // Gray
       'dark-gray': '#444D5B',
@@ -29,6 +30,7 @@ module.exports = {
       // Red
       'red-500': '#EF4444',
       'red-400': '#F77172',
+      'red-300': "#fffaa5",
 
       // Green
       'green-500': '#23C366',

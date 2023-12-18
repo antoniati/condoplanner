@@ -13,7 +13,10 @@ export default async function handle(request, response) {
 
             switch (method) {
                   case "GET":
-                        const condoUnitData = await CondoUnit.findById(id).populate("residents.residentId");
+                        const condoUnitData = await CondoUnit.findById(id).populate("residents.residentId").populate({
+                              path: 'accessLogs',
+                              select: 'statusAccessLog checkIn checkOut residents',
+                        });
 
                         if (condoUnitData) {
                               return handleApiResponses.handleRequestSuccess(

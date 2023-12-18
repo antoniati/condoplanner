@@ -18,7 +18,7 @@ const PageLoading = () => {
             <img src="/logo.svg" alt="Logo do condoplanner" />
 
             {/* Componente de carregamento com a cor e tamanho personalizados. */}
-            <PropagateLoader color="#6597FF" size={15} />
+            <PropagateLoader color="#aebde1" size={15} />
         </section>
     );
 };

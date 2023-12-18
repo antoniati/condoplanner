@@ -46,17 +46,17 @@ p {
 }
 
 .defaultTitle {
-  @apply w-full flex sm:flex-row items-center justify-between py-4 sm:py-2 border-b-2 border-b-slate-300;
+  @apply w-full flex flex-col sm:flex-row items-center justify-center sm:justify-between py-4 sm:py-2 border-b-2 border-b-slate-300;
 }
 
 .defaultTitle span {
-  @apply flex flex-col items-center text-xs;
+  @apply hidden sm:flex flex-col items-center text-base text-dark-gray;
 }
 
 /* TABLES */
 /* Estilos padrão das tabelas */
 section.basicTable {
-  @apply w-full h-auto max-h-96 bg-white-ghost overflow-auto;
+  @apply w-full h-auto max-h-96 overflow-auto;
 }
 
 section.basicTable table {
@@ -84,23 +84,31 @@ section.basicTable table thead tr th {
 }
 
 section.basicTable table tbody tr td {
-  @apply bg-white text-center border-2 border-slate-300 p-3 whitespace-nowrap font-semibold capitalize;
+  @apply text-center border-2 border-slate-300 p-3 whitespace-nowrap font-semibold capitalize;
 }
 
 section.basicTable table tbody tr.condoUnitTable {
   @apply h-16;
 }
 
+section.basicTable table thead tr th.photo {
+  @apply w-20;
+}
+
 section.basicTable table tbody tr td.photo {
-  @apply w-20 sm:w-auto flex items-center justify-center;
+  @apply w-20 flex items-center justify-center p-0;
+}
+
+section.basicTable table tbody tr td input {
+  @apply w-4 h-4 cursor-pointer;
 }
 
 section.basicTable table tbody tr td:last-child span {
   @apply flex items-center justify-center;
 }
 
-section.basicTable table tbody tr td:first-child img {
-  @apply w-20 h-20 object-cover rounded-md;
+section.basicTable table img {
+  @apply w-20 h-20 object-cover;
 }
 
 /* Lista de Fotos */
@@ -119,13 +127,16 @@ section.listOfPhotos p {
 /* FORM */
 /* Estilo padrão dos formulários */
 form.basicForm {
-  @apply w-full flex flex-col gap-5;
+  @apply w-full flex flex-col gap-5 pb-2;
 }
 
 form.basicForm section {
   @apply flex flex-wrap gap-5 mb-2;
 }
 
+form.basicForm div span {
+  @apply text-xs;
+}
 
 form.basicForm .formOption {
   @apply w-full xl:w-80;
@@ -142,4 +153,32 @@ form.basicForm .formOption select {
 form.basicForm .formOption select,
 form.basicForm .formOption input {
   @apply w-full p-3 border-2 border-slate-300 rounded-sm outline-none focus:border-light-blue text-lg;
+}
+
+form.basicForm .formUploadImages span {
+  @apply w-full sm:w-96
+}
+
+form.basicForm .formUploadImages {
+  @apply w-full flex flex-col gap-5;
+}
+
+form.basicForm .formUploadImages label {
+  @apply flex flex-col font-semibold text-lg
+}
+
+form.basicForm .formUploadImages label span {
+  @apply text-xs font-normal;
+}
+
+form.basicForm .formUploadImages div {
+  @apply flex items-center flex-wrap gap-5;
+}
+
+form.basicForm .formUploadImages div label {
+  @apply w-24 h-24 border hover:border-light-blue transition-all duration-300 rounded-md cursor-pointer text-center flex flex-col items-center justify-center text-sm gap-1 text-black bg-slate-50;
+}
+
+form.basicForm .buttonsForm {
+  @apply w-full md:w-auto flex flex-col sm:flex-row gap-5;
 }

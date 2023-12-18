@@ -1,9 +1,6 @@
-// Importação do componente de layout
 import Layout from "@/components/Layout";
-// Importação do componente de gerenciamento de formulário de residente
-import ResidentFormManager from "@/components/ResidentForm/ResidentFormManager";
+import ResidentFormManager from "@/components/Residents/ResidentForm/ResidentFormManager";
 
-// Página para registrar novos residentes
 export default function ResidentRegisterPage() {
     return (
         // Layout que envolve o conteúdo da página

@@ -1,7 +1,7 @@
 /* CUSTOM BUTTON */
 /* Estilos do botão personalizado */
 .customButton {
-    @apply w-full sm:w-auto h-14 py-3 px-4 text-center gap-5 font-medium text-lg tracking-wider rounded-md text-white border-2 flex items-center justify-center transition-all duration-300;
+    @apply w-full sm:w-auto h-14 py-3 px-4 text-center gap-5 font-medium hover:shadow-md text-lg tracking-wider rounded-md text-white border-2 flex items-center justify-center transition-all duration-300;
 }
 
 /* Estilos do botão personalizado azul */

@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
-import { HiUserPlus } from "react-icons/hi2";
-
-import HeaderSection from "@/components/HeaderSection";
-import CustomButton from "@/components/CustomButton";
+import CustomButton from "@/components/Buttons/CustomButton";
 import InputForm from "@/components/InputForm";
 import InputImage from "@/components/InputImage";
-
 import { filterOptionsResidents } from "@/utils/inputFields/filterOptions";
-import { applyCPFMask, applyPhoneMask, applyRGMask } from "@/utils/inputFields/inputFieldsMask";
-import { residentFieldsNames, residentPersonalDataFormInitialData, residentPersonalDataInputFields } from "@/utils/inputFields/residentInputFields";
+import { residentPersonalDataFormInitialData, residentPersonalDataInputFields } from "@/utils/inputFields/residentInputFields";
+import changesInputFields from "@/utils/inputFields/changeInputFields";
 
-import style from "@/styles/BasicForm.module.css";
-
-const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
+const ResidentPersonalDataForm = ({
+    onSubmit,
+    prevData
+}) => {
     const [formData, setFormData] = useState({
         ...prevData,
         ...residentPersonalDataFormInitialData,
@@ -25,29 +22,6 @@ const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
         prevData && setFormData(prevData);
     }, [prevData]);
 
-    const handleChangesInputFields = (e) => {
-        const { name, value } = e.target;
-        let maskedValue = value;
-        
-        if (name === residentFieldsNames[3]) {
-            maskedValue = applyCPFMask(value);
-        } else if (name === residentFieldsNames[2]) {
-            maskedValue = applyRGMask(value);
-        } else if (name === residentFieldsNames[6]) {
-            maskedValue = applyPhoneMask(value);
-        }
-
-        setFormData({ ...formData, [name]: maskedValue });
-
-        cleanErrorMessage(name);
-    };
-
-    const cleanErrorMessage = (fieldName) => {
-        setErrorMessages((prevErrors) => ({
-            ...prevErrors,
-            [fieldName]: "",
-        }));
-    };
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -55,32 +29,26 @@ const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
     };
 
     return (
-        <>
-            <HeaderSection
-                headerIcon={<HiUserPlus size={36} />}
-                headerTitle={"Formulário de Cadastro de Morador"}
+        <section className={"sectionContainer"}>
+            <form
+                onSubmit={handleFormSubmit}
+                className={"basicForm"}
             >
-                <p>
-                    Preencha os campos do formulário abaixo com os Dados Pessoais
-                    do Morador para Cadastrá-los.
-                </p>
-            </HeaderSection>
+                <h2 className={"defaultTitle"}>
+                    Dados Pessoais do Morador
+                    <span> Etapa: 1/2 </span>
+                </h2>
 
-            <section className={"mainWrapper"}>
-                <form onSubmit={handleFormSubmit} className={style.formContent}>
-                    <h2 className={style.titleForm}>
-                        Dados Pessoais do Morador
-                        <span> Etapa: 1/2 </span>
-                    </h2>
-
-                    <InputImage onImageSelect={(image) => setFormData({
+                <InputImage onImageSelect={(image) =>
+                    setFormData({
                         ...formData,
                         residentImage: image
                     })}
-                    />
+                />
 
-                    <section className={style.formSection}>
-                        {residentPersonalDataInputFields.map((field, index) => (
+                <section>
+                    {residentPersonalDataInputFields.map(
+                        (field, index) => (
                             <InputForm
                                 key={index}
                                 inputLabelText={field.label}
@@ -88,49 +56,62 @@ const ResidentPersonalDataForm = ({ onSubmit, prevData }) => {
                                 inputName={field.name}
                                 inputValue={formData[field.name]}
                                 inputPlaceholder={field.placeholder}
-                                inputOnChange={handleChangesInputFields}
-                                errorMessage={errorMessages[field.name]}
                                 inputMaxLength={field.maxLength}
+                                errorMessage={errorMessages[field.name]}
+                                inputOnChange={(event) =>
+                                    changesInputFields(
+                                        event,
+                                        formData,
+                                        setFormData,
+                                        setErrorMessages
+                                    )
+                                }
                             />
                         ))}
 
-                        <div className={style.formOption}>
-                            <label>Tipo</label>
-                            <select
-                                name={residentFieldsNames[9]}
-                                value={formData.typeOfResident}
-                                onChange={handleChangesInputFields}
-                                className={errorMessages && "error-input" || ""}
-                            >
-                                <option value="">Selecione um Tipo</option>
-                                {filterOptionsResidents.map((option) => (
-                                    <option
-                                        key={option.value}
-                                        value={option.value}
-                                    >
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
-                            {errorMessages.typeOfResident && (
-                                <p className="error-message">
-                                    {errorMessages.typeOfResident}
-                                </p>
-                            )}
-                        </div>
-                    </section>
-
-                    <div className={style.buttonsForm}>
-                        <CustomButton
-                            type={"submit"}
-                            buttonStyle={"black-button"}
-                            buttonText={"Próxima Etapa"}
-                        />
+                    <div className={"formOption"}>
+                        <label>Tipo</label>
+                        <select
+                            name={"typeOfResident"}
+                            value={formData.typeOfResident}
+                            onChange={(event) =>
+                                changesInputFields(
+                                    event,
+                                    formData,
+                                    setFormData,
+                                    setErrorMessages
+                                )
+                            }
+                            className={errorMessages && "errorInput" || ""}
+                        >
+                            <option value="">
+                                Selecione um Tipo
+                            </option>
+                            {filterOptionsResidents.map((option) => (
+                                <option
+                                    key={option.value}
+                                    value={option.value}
+                                >
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                        {errorMessages.typeOfResident && (
+                            <p className="errorMessage">
+                                {errorMessages.typeOfResident}
+                            </p>
+                        )}
                     </div>
-                </form>
-
-            </section>
-        </>
+                </section>
+                <span>
+                    <CustomButton
+                        type={"submit"}
+                        buttonStyle={"black-button"}
+                        buttonText={"Próxima Etapa"}
+                    />
+                </span>
+            </form>
+        </section>
     );
 };
 

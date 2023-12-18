@@ -6,7 +6,7 @@ import { defaultSuccessMessages } from "@/utils/constantsData/defaultSuccessMess
 
 export default async function handle(request, response) {
       const { method, query } = request;
-      const { residentCpfNumber } = query;
+      const { residentRgNumber } = query;
 
       try {
             await connectionWithMongoDB();
@@ -14,7 +14,7 @@ export default async function handle(request, response) {
             switch (method) {
                   case "GET":
                         const residentData = await Resident.findOne({
-                              residentCpfNumber: residentCpfNumber
+                              residentRgNumber: residentRgNumber
                         });
 
                         if (residentData) {

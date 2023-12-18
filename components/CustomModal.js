@@ -6,6 +6,7 @@ const CustomModal = ({
     modalTitle,
     modalDescription,
     functionToCloseModal,
+    children
 }) => {    
     return (
         <div className={style.modalWrapper}>
@@ -17,6 +18,7 @@ const CustomModal = ({
                 </div>
                                 
                 <div className={style.modalButton}>
+                    {children}
                     <CustomButton
                         buttonType={"button"}
                         buttonStyle={"black-button"}

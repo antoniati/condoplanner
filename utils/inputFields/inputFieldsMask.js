@@ -82,7 +82,6 @@ export const formatDateTime = (dateTimeString) => {
     return `${formattedDate} às ${formattedTime}`;
 };
 
-
 /**
  * Formata uma data no formato desejado.
  *
@@ -90,7 +89,13 @@ export const formatDateTime = (dateTimeString) => {
  * @returns {string} - Data formatada no formato 'DD/MM/YYYY'.
  */
 export const formatDate = (dateString) => {
-    const date = new Date(dateString);
+    const adjustDate = (date) => {
+        return new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+    };
+
+    const date = adjustDate(new Date(dateString));
     const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+    
     return formattedDate;
 };
+

@@ -4,22 +4,39 @@ const CondoUnitSchema = new Schema(
     {
         condoUnitNumber: { type: String, required: true },
         condoUnitBlock: { type: String, required: true },
-        condoUnitStatus: {
+        typeOfCondoUnit: {
             type: String,
             required: true,
-            enum: ["morando", "mensal", "temporada", "emprestada", "reformando", "vazia"],
+            enum: [
+                "proprietário",
+                "mensal",
+                "temporada",
+                "emprestada",
+                "reformando",
+            ],
         },
+
         condoUnitImages: [{ type: String }],
 
-        // Modificação: Lista de moradores
         residents: [
             {
-                residentId: { type: Schema.Types.ObjectId, ref: "Resident" },
-                isTitular: { type: Boolean, default: false },
+                residentId: {
+                    type: Schema.Types.ObjectId,
+                    ref: "Resident"
+                },
+                isHolder: {
+                    type: Boolean,
+                    default: false
+                },
             }
         ],
-    },
-    { timestamps: true }
+
+        accessLogs: [{
+            type: Schema.Types.ObjectId,
+            ref: "AccessLog"
+        }],
+
+    }, { timestamps: true }
 );
 
 export const CondoUnit = models.CondoUnit || model('CondoUnit', CondoUnitSchema);
